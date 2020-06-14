@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.pay.dao.TeamDataDao">
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.pay.model.TeamDataModel" id="dataMap">
+        <result property="nickname" column="nickname" />
+        <result property="acNum" column="ac_num" />
+        <result property="icode" column="icode" />
+        <result property="totalMoney" column="total_money" />
+        <result property="balance" column="balance" />
+        <result property="ownId" column="own_id" />
+        <result property="acName" column="ac_name" />
+        <result property="payee" column="payee" />
+        <result property="checkStatus" column="check_status" />
+        <result property="checkInfo" column="check_info" />
+        <result property="isHave" column="is_have" />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="acNum != null and acNum != '' " >
+                and a.ac_num = #{acNum}
+            </if>
+            <if test="ownId != 0 and ownId >0 " >
+                and a.own_id = #{ownId}
+            </if>
+            <if test="payee != null and payee != '' " >
+                and b.payee = #{payee}
+            </if>
+            <if test="isHave != 0 and isHave >0 " >
+                and b.id is null
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1) from (
+        select a.nickname,a.ac_num,a.icode,a.total_money,a.balance,a.own_id,
+        b.ac_name,b.payee,ifnull(b.check_status,4) as check_status,b.check_info,ifnull(b.id, -1) as is_have
+        from tb_fn_did a
+        left join tb_fn_did_collection_account b on a.id = b.did and b.yn =0
+        <include refid="Example_Where_Clause"/>
+        )a
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select a.nickname,a.ac_num,a.icode,a.total_money,a.balance,a.own_id,
+        b.ac_name,b.payee,ifnull(b.check_status,4) as check_status,b.check_info,ifnull(b.id, -1) as is_have
+        from tb_fn_did a
+        left join tb_fn_did_collection_account b on a.id = b.did and b.yn =0
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+
+
+</mapper>

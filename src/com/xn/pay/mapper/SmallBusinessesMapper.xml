@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xn.pay.dao.SmallBusinessesDao" >
+  <!-- 属性映射 -->
+  <resultMap type="com.xn.pay.model.SmallBusinesses" id="dataMap">
+    <id column="id" property="id"  />
+    <result column="ac_name" property="acName"  />
+    <result column="wx_pass_wd" property="wxPassWd"  />
+    <result column="wx_name" property="wxName"  />
+    <result column="to_wxid" property="toWxid"  />
+    <result column="total_link" property="totalLink"  />
+    <result column="binding_mobile" property="bindingMobile"  />
+    <result column="use_status" property="useStatus"  />
+    <result column="create_time" property="createTime"  />
+    <result column="update_time" property="updateTime"  />
+    <result column="ts_time" property="tsTime"  />
+    <result column="yn" property="yn"  />
+  </resultMap>
+  <!-- 定义数据库基本列,只适用代替单表的*-->
+  <sql id="Base_Column_List">
+        a.id, a.ac_name, a.wx_pass_wd, a.wx_name, a.to_wxid, a.total_link, a.binding_mobile, a.use_status,
+    a.create_time, a.update_time, a.ts_time, a.yn
+    </sql>
+
+
+
+
+  <!-- 查询条件 -->
+  <sql id="Example_Where_Clause">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="acName != null and acName != '' " >
+        and a.ac_name = #{acName}
+      </if>
+      <if test="wxName != null and wxName != '' " >
+        and a.wx_name = #{wxName}
+      </if>
+      <if test="toWxid != null and toWxid != '' " >
+        and a.to_wxid = #{toWxid}
+      </if>
+      <if test="bindingMobile != null and bindingMobile != '' " >
+        and a.binding_mobile like concat('%',#{bindingMobile},'%')
+      </if>
+      <if  test="useStatus != null and useStatus != ''" >
+        and a.use_status = #{useStatus}
+      </if>
+      and a.yn = 0
+    </trim>
+  </sql>
+
+  <!-- 查询条件_id -->
+  <sql id="Example_Where_Clause_id">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="id != 0 and id >0 " >
+        and a.id = #{id}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 查询总数-->
+  <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+    select count(1)
+    from tb_fn_wx a
+    <include refid="Example_Where_Clause"/>
+  </select>
+
+  <!-- 查询分页列表 -->
+  <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_wx a
+    <include refid="Example_Where_Clause"/>
+    order by a.create_time desc
+    limit #{startIndex},#{pageSize}
+  </select>
+
+  <!-- 查询列表-无分页-有条件/有条件 -->
+  <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_wx a
+    <include refid="Example_Where_Clause"/>
+    order by a.create_time desc
+  </select>
+
+
+  <!-- 根据id查询记录 -->
+  <select id="queryById"  resultMap="dataMap" parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_wx a
+    <include refid="Example_Where_Clause_id"/>
+  </select>
+
+  <!-- 根据条件查询记录 -->
+  <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_wx a
+    <include refid="Example_Where_Clause"/>
+    limit 1
+  </select>
+
+  <!-- 添加记录 -->
+  <insert id="add" parameterType="Object" >
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() as id
+    </selectKey>
+    insert into tb_fn_wx
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="acName != null" >
+        ac_name,
+      </if>
+      <if test="wxPassWd != null" >
+        wx_pass_wd,
+      </if>
+      <if test="wxName != null" >
+        wx_name,
+      </if>
+      <if test="toWxid != null" >
+        to_wxid,
+      </if>
+      <if test="totalLink != null" >
+        total_link,
+      </if>
+      <if test="bindingMobile != null" >
+        binding_mobile,
+      </if>
+      <if test="useStatus != null" >
+        use_status,
+      </if>
+      create_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="acName != null" >
+        #{acName,jdbcType=VARCHAR},
+      </if>
+      <if test="wxPassWd != null" >
+        #{wxPassWd,jdbcType=VARCHAR},
+      </if>
+      <if test="wxName != null" >
+        #{wxName,jdbcType=VARCHAR},
+      </if>
+      <if test="toWxid != null" >
+        #{toWxid,jdbcType=VARCHAR},
+      </if>
+      <if test="totalLink != null" >
+        #{totalLink,jdbcType=INTEGER},
+      </if>
+      <if test="bindingMobile != null" >
+        #{bindingMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="useStatus != null" >
+        #{useStatus,jdbcType=BIT},
+      </if>
+      NOW(),
+    </trim>
+  </insert>
+
+
+  <!-- 更新记录 -->
+  <update id="update" parameterType="Object">
+    UPDATE tb_fn_wx a
+    <trim prefix="set" suffixOverrides=",">
+      <if test="acName != null" >
+        ac_name = #{acName,jdbcType=VARCHAR},
+      </if>
+      <if test="wxPassWd != null" >
+        wx_pass_wd = #{wxPassWd,jdbcType=VARCHAR},
+      </if>
+      <if test="wxName != null" >
+        wx_name = #{wxName,jdbcType=VARCHAR},
+      </if>
+      <if test="toWxid != null" >
+        to_wxid = #{toWxid,jdbcType=VARCHAR},
+      </if>
+      <if test="totalLink != null" >
+        total_link = #{totalLink,jdbcType=INTEGER},
+      </if>
+      <if test="bindingMobile != null" >
+        binding_mobile = #{bindingMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="useStatus != null" >
+        use_status = #{useStatus,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      a.update_time = NOW(),
+    </trim>
+    <include refid="Example_Where_Clause_id"/>
+  </update>
+
+
+  <!-- 主要作用1.逻辑删除，2更新状态 -->
+  <update id="manyOperation" parameterType="Object">
+    update tb_fn_wx a
+    <trim prefix="set" suffixOverrides=",">
+      <if test="useStatus != 0 and useStatus>0  " >
+        a.use_status=#{useStatus},
+      </if>
+      a.update_time=NOW()
+    </trim>
+    <include refid="Example_Where_Clause_id"/>
+  </update>
+
+  <!--逻辑删除数据 -->
+  <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_fn_wx a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id =#{id}
+        and a.yn=0
+    </update>
+
+</mapper>

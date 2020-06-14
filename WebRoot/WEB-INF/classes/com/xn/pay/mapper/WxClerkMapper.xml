@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xn.pay.dao.WxClerkDao" >
+  <!-- 属性映射 -->
+  <resultMap type="com.xn.pay.model.WxClerk" id="dataMap">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="wx_id" property="wxId" jdbcType="BIGINT" />
+    <result column="did" property="did" jdbcType="BIGINT" />
+    <result column="collection_account_id" property="collectionAccountId" jdbcType="BIGINT" />
+    <result column="online_time" property="onlineTime" jdbcType="TIMESTAMP" />
+    <result column="offline_time" property="offlineTime" jdbcType="TIMESTAMP" />
+    <result column="use_status" property="useStatus" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="ts_time" property="tsTime" jdbcType="TIMESTAMP" />
+    <result column="yn" property="yn" jdbcType="BIT" />
+  </resultMap>
+  <!-- 定义数据库基本列,只适用代替单表的*-->
+  <sql id="Base_Column_List">
+        a.id, a.wx_id, a.did, a.collection_account_id, a.online_time, a.offline_time, a.use_status, a.create_time,
+        a.update_time, a.ts_time, a.yn
+    </sql>
+
+
+
+
+  <!-- 查询条件 -->
+  <sql id="Example_Where_Clause">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="mobileCardId != 0 and mobileCardId >0 " >
+        and a.mobile_card_id = #{mobileCardId}
+      </if>
+      <if test="bankName != null and bankName != '' " >
+        and a.bank_name = #{bankName}
+      </if>
+      <if test="bankCard != null and bankCard != '' " >
+        and a.bank_card = #{bankCard}
+      </if>
+      <if test="bankType != null and bankType != '' " >
+        and a.bank_type = #{bankType}
+      </if>
+      <if  test="useStatus != null and useStatus != ''" >
+        and a.use_status = #{useStatus}
+      </if>
+      <if  test="openType != null and openType != ''" >
+        and a.open_type = #{openType}
+      </if>
+      <if  test="specialType != null and specialType != ''" >
+        and a.special_type = #{specialType}
+      </if>
+      <if  test="daySwitch != null and daySwitch != ''" >
+        and a.day_switch = #{daySwitch}
+      </if>
+      and a.yn = 0
+    </trim>
+  </sql>
+
+  <!-- 查询条件_id -->
+  <sql id="Example_Where_Clause_id">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="id != 0 and id >0 " >
+        and a.id = #{id}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 查询总数-->
+  <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+    select count(1)
+    from tb_fn_wx_clerk a
+    <include refid="Example_Where_Clause"/>
+  </select>
+
+  <!-- 查询分页列表 -->
+  <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_wx_clerk a
+    <include refid="Example_Where_Clause"/>
+    order by a.create_time desc
+    limit #{startIndex},#{pageSize}
+  </select>
+
+  <!-- 查询列表-无分页-有条件/有条件 -->
+  <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_wx_clerk a
+    <include refid="Example_Where_Clause"/>
+    order by a.create_time desc
+  </select>
+
+
+  <!-- 根据id查询记录 -->
+  <select id="queryById"  resultMap="dataMap" parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_wx_clerk a
+    <include refid="Example_Where_Clause_id"/>
+  </select>
+
+  <!-- 根据条件查询记录 -->
+  <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_wx_clerk a
+    <include refid="Example_Where_Clause"/>
+    limit 1
+  </select>
+
+  <!-- 添加记录 -->
+  <insert id="add" parameterType="Object" >
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() as id
+    </selectKey>
+    insert into tb_fn_wx_clerk
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="wxId != null" >
+        wx_id,
+      </if>
+      <if test="did != null" >
+        did,
+      </if>
+      <if test="collectionAccountId != null" >
+        collection_account_id,
+      </if>
+      <if test="onlineTime != null" >
+        online_time,
+      </if>
+      <if test="offlineTime != null" >
+        offline_time,
+      </if>
+      <if test="useStatus != null" >
+        use_status,
+      </if>
+        create_time,
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="wxId != null" >
+        #{wxId,jdbcType=BIGINT},
+      </if>
+      <if test="did != null" >
+        #{did,jdbcType=BIGINT},
+      </if>
+      <if test="collectionAccountId != null" >
+        #{collectionAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="onlineTime != null" >
+        #{onlineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="offlineTime != null" >
+        #{offlineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useStatus != null" >
+        #{useStatus,jdbcType=BIT},
+      </if>
+       NOW(),
+    </trim>
+  </insert>
+
+
+  <!-- 更新记录 -->
+  <update id="update" parameterType="Object">
+    UPDATE tb_fn_wx_clerk a
+    <trim prefix="set" suffixOverrides=",">
+      <if test="wxId != null" >
+        wx_id = #{wxId,jdbcType=BIGINT},
+      </if>
+      <if test="did != null" >
+        did = #{did,jdbcType=BIGINT},
+      </if>
+      <if test="collectionAccountId != null" >
+        collection_account_id = #{collectionAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="onlineTime != null" >
+        online_time = #{onlineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="offlineTime != null" >
+        offline_time = #{offlineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useStatus != null" >
+        use_status = #{useStatus,jdbcType=BIT},
+      </if>
+      a.update_time = NOW(),
+    </trim>
+    <include refid="Example_Where_Clause_id"/>
+  </update>
+
+
+  <!-- 主要作用1.逻辑删除，2更新状态 -->
+  <update id="manyOperation" parameterType="Object">
+    update tb_fn_wx_clerk a
+    <trim prefix="set" suffixOverrides=",">
+      <if test="useStatus != 0 and useStatus>0  " >
+        a.use_status=#{useStatus},
+      </if>
+      a.update_time=NOW()
+    </trim>
+    <include refid="Example_Where_Clause_id"/>
+  </update>
+
+  <!--逻辑删除数据 -->
+  <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_fn_wx_clerk a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id =#{id}
+        and a.yn=1
+   </update>
+
+
+  <!--逻辑删除数据 -->
+  <update id="deleteAll" parameterType="java.lang.Long">
+        UPDATE tb_fn_wx_clerk a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.wx_id =#{id}
+        and a.yn=0
+   </update>
+
+
+  <update id="deleteCollectionAccountId" parameterType="java.lang.Long">
+        UPDATE tb_fn_wx_clerk a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.wx_id =#{id}
+        and a.yn=0
+   </update>
+
+
+</mapper>
