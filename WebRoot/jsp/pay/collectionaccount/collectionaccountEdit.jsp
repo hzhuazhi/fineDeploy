@@ -6,6 +6,7 @@
     <%@ include file="/jsp/manager/common/head-meta.jsp"%>
     <%@ include file="/jsp/manager/common/js-meta.jsp"%>
     <script type='text/javascript' src='${ctxData}js/plugins/ajaxfileupload.js'></script>
+    <script type='text/javascript' src='${ctxData}js/common/qrcode.js'></script>
     <link rel="stylesheet" type="text/css" href="${ctxData}css/role.css?v=${version}">
     <style type="text/css">
         .manage-wrap{background-color: #E2E0DB;display: inline-block;vertical-align: top; font-size: 12px;padding: 0;width: 140px;height: 30px;line-height: 30px;margin: 0 20px 10px 0;}
@@ -23,7 +24,6 @@
             <h2>编辑银行</h2>
         </div>
         <div >
-
                 <ul>
                     <c:set var="dl" value="${account}"/>
                     <input type="hidden" id="id" name="id" value="${dl.id}">
@@ -45,7 +45,7 @@
                         </div>
 
                         <div class="formCtrlDiv">
-                            <select id="wxId" name="wxId" class='text-input medium-input'>
+                            <select id="wxId" name="wxId" class='text-input medium-input' >
                                 <option value="">===请选择===</option>
                                 <c:forEach items="${small}" var="dataList">
                                     <c:choose>
@@ -105,8 +105,9 @@
                         <div class="formTextDiv">
                             <span class="require">收款账号/地址</span>
                         </div>
-                        <div class="formCtrlDiv" >
-                            <img src="${dl.mmQrCode}" width="250px" height="250px" alt="mmQrCode" id="mmQrCode">
+                        <div class="formCtrlDiv" id="mmQrCode">
+
+                            <%--<img  width="250px" height="250px" alt="mmQrCode" id="mmQrCode">--%>
                             <%--<input type="text" class="formInput" id="mmQrCode" name="mmQrCode"	value="${dl.mmQrCode}" maxlength="240"  />--%>
                         </div>
                     </li>
@@ -125,7 +126,7 @@
                             <span class="require"><font color="red">*</font>收款人（昵称）</span>
                         </div>
                         <div class="formCtrlDiv">
-                            <input type="text" class="formInput" id="payee" name="payee" value="${dl.payee}"	maxlength="240" disabled />
+                            <input type="text" class="formInput" id="payee" name="payee" value="${dl.payee}"	maxlength="240"  />
                         </div>
                     </li>
                     <li style="border-top: none;">
@@ -188,7 +189,9 @@
                     </li>
                     <li>
                         <div class="" style="margin-bottom: 20px; margin-top: 20px;margin-left:200px;">
-                            <input type="submit" class="formBtn" value="添  加" style="background-color: #54D8FE;"/> <span>
+                            <input type="button" class="formBtn" value="检测小薇用户" id="add_xw" name="add_xw" style="background-color: #54D8FE;"/>
+                            <input type="submit" class="formBtn" value="添  加" style="background-color: #54D8FE;"/>
+                            <span>
 						</span> <input type="reset" class="formBtn" value="重  置" style="background-color: #54D8FE;" />
                             <input type="button" onClick="javascript :history.back(-1);" class="formBtn" value=" 返 回 " style="background-color: #54D8FE;"/>
                         </div>
@@ -202,8 +205,8 @@
         <div class="formTextDiv">
             <span class="require">小微地址</span>
         </div>
-
     </li>
+
     <div >
         <img src="${dl.wxQrCodeAds}"  alt="wxQrCodeAds" id="wxQrCodeAds">
         <%--<input type="text" class="formInput" id="wxQrCodeAds" name="wxQrCodeAds"	value="${dl.wxQrCodeAds}" maxlength="240"  />--%>
@@ -211,7 +214,17 @@
 </form>
 <script type='text/javascript' charset="utf-8" src='${ctxData}js/common/common2.js'></script>
 <script type="text/javascript">
+
+
+
     $(function(){
+        var    qrcodeIntn =document.getElementById("mmQrCode");
+        var qrcode = new QRCode(qrcodeIntn, {
+            width : 200,//设置宽高
+            height : 200
+        });
+        qrcode.makeCode($("#ddQrCode").val());
+
         //密码输入验证
         $("#addSupplierForm").validate({
             rules:{
@@ -260,6 +273,32 @@
                 //阻止表单提交
             }
         });
+
+        $("#add_xw").click(function(){
+            var url = ctx + "/collectionaccount/queryExamine.do";
+            var data = {
+            };
+            common.ajax(url,data,function(data){
+                var dataList=data.rows;
+                if(dataList[0].rscode!=0){
+                    if(dataList[0].wx_id==undefined||dataList[0].wx_id=="undefined"){
+                        alert("当前没有可用的小薇可以用来认证，请等待2秒再试！");
+                        return
+                    }
+                }else{
+                    if(dataList[0].wx_id==undefined||dataList[0].wx_id=="undefined"){
+                        alert("当前没有可用的小薇可以用来认证，请稍等！");
+                        return
+                    }
+                    $("#wxId").val(dataList[0].wx_id);
+                    $("#payee").val(dataList[0].wxname);
+
+                }
+            });
+            common.showDatas(account.condJsonData,account.list);
+        });
+
+
     });
 </script>
 </body>

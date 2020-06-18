@@ -51,7 +51,7 @@
             <th nowrap>收款账户名称</th>
             <th nowrap>收款账户类型</th>
             <%--<th nowrap>收款的具体账号</th>--%>
-            <th nowrap>收款账号/地址</th>
+            <%--<th nowrap>收款账号/地址</th>--%>
             <th nowrap>转换后字符串</th>
             <th nowrap>收款人（昵称）</th>
             <th nowrap>经营范围类型</th>

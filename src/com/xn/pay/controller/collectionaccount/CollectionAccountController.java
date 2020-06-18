@@ -3,12 +3,8 @@ package com.xn.pay.controller.collectionaccount;
 import com.xn.common.constant.ManagerConstant;
 import com.xn.common.controller.BaseController;
 import com.xn.common.util.HtmlUtil;
-import com.xn.pay.model.CollectionAccount;
-import com.xn.pay.model.SmallBusinesses;
-import com.xn.pay.model.WxClerk;
-import com.xn.pay.service.CollectionAccountService;
-import com.xn.pay.service.SmallBusinessesService;
-import com.xn.pay.service.WxClerkService;
+import com.xn.pay.model.*;
+import com.xn.pay.service.*;
 import com.xn.system.entity.Account;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +16,9 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description TODO
@@ -41,6 +39,12 @@ public class CollectionAccountController<T> extends BaseController {
 
     @Autowired
     private SmallBusinessesService<SmallBusinesses> smallBusinessesService;
+
+    @Autowired
+    private CatDataBindingService<CatDataBinding> catDataBindingService;
+
+    @Autowired
+    private  DidCollectionAccountQrCodeService<DidCollectionAccountQrCode>  didCollectionAccountQrCodeService;
 
     /**
      * 获取页面
@@ -65,10 +69,63 @@ public class CollectionAccountController<T> extends BaseController {
 //                model.setLinkId(account.getId());
 //                model.setRoleId(account.getRoleId());
             }
+
             dataList = collectionAccountService.queryByList(model);
+            for(CollectionAccount collectionAccount:dataList){
+                DidCollectionAccountQrCode  didCollectionAccountQrCode  =new DidCollectionAccountQrCode();
+                didCollectionAccountQrCode.setCollectionAccountId(collectionAccount.getId());
+                List<DidCollectionAccountQrCode>  didList = didCollectionAccountQrCodeService.queryAllList(didCollectionAccountQrCode);
+                if(didList.size()>0){
+                    collectionAccount.setDdQrCode(didList.get(0).getDdQrCode());
+                }
+            }
         }
         HtmlUtil.writerJson(response, model.getPage(), dataList);
     }
+
+
+
+    @RequestMapping("/queryExamine")
+    public void queryExamine(HttpServletRequest request, HttpServletResponse response,CollectionAccount model) throws Exception {
+        String state ="";
+        String wxname ="";
+        List<CatDataBinding> dataList = new ArrayList<CatDataBinding>();
+        CatDataBinding  catDataBinding= new CatDataBinding();
+        catDataBinding.setCollectionAccountId(model.getId());
+        dataList = catDataBindingService.queryAllList(catDataBinding);
+        List<Map<String,String>>    list= new ArrayList<>();
+        Map<String,String> rsMap = new HashMap<>();
+        if(dataList.size()==0){
+//            sendSuccessMessage(response, "还未查询到绑定数据，稍等1 -2 秒在进行点击");
+            state  ="还未查询到绑定数据，稍等1 -2 秒在进行点击";
+            rsMap.put("rscode","1");
+            rsMap.put("state",state);
+        }else{
+            wxname=dataList.get(0).getWxName();
+           //更新微信昵称
+//            CollectionAccount  collectionAccount = new  CollectionAccount();
+//            collectionAccount.setId(model.getId());
+//            collectionAccount.setWxId(dataList.get(0).getWxId());
+
+//            CatDataBinding  catDataBinding1= new CatDataBinding();
+//            catDataBinding1.setId(dataList.get(0).getId());
+//            catDataBinding1.setRunStatus(3);
+//            int  count =catDataBindingService.bindingSmail(collectionAccount,catDataBinding1);
+
+
+            state="检查成功，请扫描微信二维码确定名字是否一致！";
+            rsMap.put("rscode","0");
+            rsMap.put("wx_id",""+dataList.get(0).getWxId());
+            rsMap.put("state",state);
+            rsMap.put("wxname",wxname);
+            rsMap.put("rowCount","1");
+
+        }
+        list.add(rsMap);
+        model.setRowCount(1);
+        HtmlUtil.writerJson(response,model.getPage(), list);
+    }
+
 
 
     /**
@@ -122,7 +179,15 @@ public class CollectionAccountController<T> extends BaseController {
     public String jumpUpdate(Model model, long id) {
         CollectionAccount atModel = new CollectionAccount();
         atModel.setId(id);
-        model.addAttribute("account", collectionAccountService.queryById(atModel));
+        CollectionAccount collectionAccount  =collectionAccountService.queryById(atModel);
+
+        DidCollectionAccountQrCode  didCollectionAccountQrCode  =new DidCollectionAccountQrCode();
+        didCollectionAccountQrCode.setCollectionAccountId(collectionAccount.getId());
+        List<DidCollectionAccountQrCode>  didList = didCollectionAccountQrCodeService.queryAllList(didCollectionAccountQrCode);
+        if(didList.size()>0){
+            collectionAccount.setDdQrCode(didList.get(0).getDdQrCode());
+        }
+        model.addAttribute("account", collectionAccount);
         model.addAttribute("small", smallBusinessesService.queryAllList());
         return "pay/collectionaccount/collectionaccountEdit";
     }
@@ -143,6 +208,12 @@ public class CollectionAccountController<T> extends BaseController {
                 wxClerk.setCollectionAccountId(bean.getId());
                 wxClerkService.deleteCollectionAccountId(bean.getId());
                 wxClerkService.add(wxClerk);
+
+                CatDataBinding  catDataBinding = new  CatDataBinding();
+                catDataBinding.setWxId(bean.getWxId());
+                catDataBinding.setRunStatus(3);
+                int  count =catDataBindingService.bindingSmail(catDataBinding);
+
             }
             sendSuccessMessage(response, "保存成功~");
         }else {

@@ -9,7 +9,8 @@ var account = {
         update_url : ctx+ "/collectionaccount/update.do",
         queryId_url: ctx+ "/collectionaccount/getId.do",
         delete_url: ctx+ "/collectionaccount/delete.do",
-        manyOperation_url: ctx+ "/collectionaccount/manyOperation.do"
+        manyOperation_url: ctx+ "/collectionaccount/manyOperation.do",
+        queryExamine_url: ctx+ "/collectionaccount/queryExamine.do"
     },
     //列表显示参数
     list:[
@@ -18,7 +19,7 @@ var account = {
         {"data":"acName",},
         {"data":"acType",},
         // {"data":"acNum",},
-        {"data":"mmQrCode",},
+        // {"data":"mmQrCode",},
         {"data":"ddQrCode",},
         {"data":"payee",},
         {"data":"businessType",

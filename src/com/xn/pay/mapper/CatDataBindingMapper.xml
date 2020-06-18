@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xn.pay.dao.CatDataBindingDao" >
+  <!-- 属性映射 -->
+  <resultMap type="com.xn.pay.model.CatDataBinding" id="dataMap">
+    <id column="id" property="id" />
+    <result column="all_id" property="allId"/>
+    <result column="wx_id" property="wxId"/>
+    <result column="to_wxid" property="toWxid"  />
+    <result column="wx_name" property="wxName"  />
+    <result column="collection_account_id" property="collectionAccountId"  />
+    <result column="curday" property="curday"  />
+    <result column="curhour" property="curhour" />
+    <result column="curminute" property="curminute"  />
+    <result column="work_type" property="workType"  />
+    <result column="matching_type" property="matchingType"  />
+    <result column="remark" property="remark"  />
+    <result column="run_num" property="runNum"  />
+    <result column="run_status" property="runStatus"  />
+    <result column="create_time" property="createTime"  />
+    <result column="update_time" property="updateTime"  />
+    <result column="ts_time" property="tsTime"  />
+    <result column="yn" property="yn"  />
+  </resultMap>
+  <!-- 定义数据库基本列,只适用代替单表的*-->
+  <sql id="Base_Column_List">
+        a.id, a.all_id, a.wx_id, a.to_wxid, a.wx_name, a.collection_account_id, a.curday,
+        a.curhour, a.curminute, a.work_type, a.matching_type, a.remark, a.run_num, a.run_status, a.create_time,
+        a.update_time, a.ts_time, a.yn
+    </sql>
+
+
+
+
+  <!-- 查询条件 -->
+  <sql id="Example_Where_Clause">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <!--<if test="wxId != 0 and wxId >0 " >-->
+        <!--and a.wx_id = #{wxId}-->
+      <!--</if>-->
+      <!--<if test="toWxid != null and toWxid != '' " >-->
+        <!--and a.to_wxid = #{toWxid}-->
+      <!--</if>-->
+      <if test="wxName != null and wxName != '' " >
+        and a.wx_name = #{wxName}
+      </if>
+      <if test="collectionAccountId != null and collectionAccountId != '' " >
+        and a.collection_account_id = #{collectionAccountId}
+      </if>
+      and  a.work_type&gt;1
+      and  a.run_status!=3
+      and a.yn = 0
+    </trim>
+  </sql>
+
+  <!-- 查询条件_id -->
+  <sql id="Example_Where_Clause_id">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="id != 0 and id >0 " >
+        and a.id = #{id}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 查询总数-->
+  <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+    select count(1)
+    from tb_fn_cat_data_binding a
+    <include refid="Example_Where_Clause"/>
+  </select>
+
+  <!-- 查询分页列表 -->
+  <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_cat_data_binding  a
+    <include refid="Example_Where_Clause"/>
+    order by a.create_time desc
+    limit #{startIndex},#{pageSize}
+  </select>
+
+  <!-- 查询列表-无分页-有条件/有条件 -->
+  <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_cat_data_binding a
+    <include refid="Example_Where_Clause"/>
+    order by a.create_time desc  limit 1
+  </select>
+
+
+  <!-- 根据id查询记录 -->
+  <select id="queryById"  resultMap="dataMap" parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_cat_data_binding a
+    <include refid="Example_Where_Clause_id"/>
+  </select>
+
+  <!-- 根据条件查询记录 -->
+  <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_cat_data_binding a
+    <include refid="Example_Where_Clause"/>
+    limit 1
+  </select>
+
+
+  <!-- 更新记录 -->
+  <update id="update" parameterType="Object">
+    UPDATE tb_fn_cat_data_binding a
+    <trim prefix="set" suffixOverrides=",">
+
+      <if test="runStatus != null" >
+        run_status = #{runStatus},
+      </if>
+      a.update_time = NOW(),
+    </trim>
+    <include refid="Example_Where_Clause_id"/>
+  </update>
+
+</mapper>
