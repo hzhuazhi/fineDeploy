@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xn.pay.dao.DidCollectionAccountQrCodeDao" >
+  <!-- 属性映射 -->
+  <resultMap type="com.xn.pay.model.DidCollectionAccountQrCode" id="dataMap">
+    <id column="id" property="id" />
+    <result column="collection_account_id" property="collectionAccountId"/>
+    <result column="alias" property="alias"/>
+    <result column="mm_qr_code" property="mmQrCode"  />
+    <result column="dd_qr_code" property="ddQrCode"  />
+    <result column="data_type" property="dataType"  />
+    <result column="qr_code_money" property="qrCodeMoney"  />
+    <result column="limit_num" property="limitNum" />
+    <result column="is_limit_num" property="isLimitNum"  />
+    <result column="use_status" property="useStatus"  />
+    <result column="remark" property="remark"  />
+    <result column="create_time" property="createTime"  />
+    <result column="update_time" property="updateTime"  />
+    <result column="ts_time" property="tsTime"  />
+    <result column="yn" property="yn"  />
+  </resultMap>
+
+  <!-- 定义数据库基本列,只适用代替单表的*-->
+  <sql id="Base_Column_List">
+        a.id, a.collection_account_id, a.alias, a.mm_qr_code, a.dd_qr_code, a.data_type, a.qr_code_money,
+        a.limit_num, a.is_limit_num, a.use_status, a.remark, a.create_time, a.update_time, a.ts_time, a.yn
+    </sql>
+
+
+  <!-- 查询条件 -->
+  <sql id="Example_Where_Clause">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="collectionAccountId != null and collectionAccountId != '' " >
+        and a.collection_account_id = #{collectionAccountId}
+      </if>
+      and  a.limit_num>is_limit_num
+      and  a.use_status=1
+      and a.yn = 0
+    </trim>
+  </sql>
+
+  <!--&lt;!&ndash; 查询条件_id &ndash;&gt;-->
+  <!--<sql id="Example_Where_Clause_id">-->
+    <!--where 1=1-->
+    <!--<trim  suffixOverrides="," >-->
+      <!--<if test="id != 0 and id >0 " >-->
+        <!--and a.id = #{id}-->
+      <!--</if>-->
+    <!--</trim>-->
+  <!--</sql>-->
+
+  <!--&lt;!&ndash; 查询总数&ndash;&gt;-->
+  <!--<select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">-->
+    <!--select count(1)-->
+    <!--from tb_fn_did_collection_account_qr_code a-->
+    <!--<include refid="Example_Where_Clause"/>-->
+  <!--</select>-->
+
+  <!--&lt;!&ndash; 查询分页列表 &ndash;&gt;-->
+  <!--<select id="queryByList" resultMap="dataMap"  parameterType="Object">-->
+    <!--select-->
+    <!--<include refid="Base_Column_List" />-->
+    <!--from tb_fn_cat_data_binding  a-->
+    <!--<include refid="Example_Where_Clause"/>-->
+    <!--order by a.create_time desc-->
+    <!--limit #{startIndex},#{pageSize}-->
+  <!--</select>-->
+
+  <!--&lt;!&ndash; 查询列表-无分页-有条件/有条件 &ndash;&gt;-->
+  <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_did_collection_account_qr_code a
+    <include refid="Example_Where_Clause"/>
+    order by a.create_time desc  limit 1
+  </select>
+
+
+  <!--&lt;!&ndash; 根据id查询记录 &ndash;&gt;-->
+  <!--<select id="queryById"  resultMap="dataMap" parameterType="Object">-->
+    <!--select-->
+    <!--<include refid="Base_Column_List" />-->
+    <!--from tb_fn_cat_data_binding a-->
+    <!--<include refid="Example_Where_Clause_id"/>-->
+  <!--</select>-->
+
+  <!--&lt;!&ndash; 根据条件查询记录 &ndash;&gt;-->
+  <!--<select id="queryByCondition"  resultMap="dataMap" parameterType="Object">-->
+    <!--select-->
+    <!--<include refid="Base_Column_List" />-->
+    <!--from tb_fn_cat_data_binding a-->
+    <!--<include refid="Example_Where_Clause"/>-->
+    <!--limit 1-->
+  <!--</select>-->
+
+
+  <!--&lt;!&ndash; 更新记录 &ndash;&gt;-->
+  <!--<update id="update" parameterType="Object">-->
+    <!--UPDATE tb_fn_cat_data_binding a-->
+    <!--<trim prefix="set" suffixOverrides=",">-->
+
+      <!--<if test="runStatus != null" >-->
+        <!--run_status = #{runStatus},-->
+      <!--</if>-->
+      <!--a.update_time = NOW(),-->
+    <!--</trim>-->
+    <!--<include refid="Example_Where_Clause_id"/>-->
+  <!--</update>-->
+
+</mapper>
