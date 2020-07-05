@@ -232,7 +232,7 @@
         UPDATE tb_fn_wx_clerk a set a.yn = 1,
         a.update_time = now()
         where 1=1
-        and a.wx_id =#{id}
+        and a.collection_account_id =#{id}
         and a.yn=0
    </update>
 

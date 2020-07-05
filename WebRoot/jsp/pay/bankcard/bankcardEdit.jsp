@@ -191,9 +191,9 @@
                                     <option value="1" selected>满 额</option>
                                     <option value="2">随 机</option>
                                 </c:if>
-                                <c:if test="${dl.openType == 2}">
+                                <c:if test="${dl.specialType == 2}">
                                     <option value="1" >满 额</option>
-                                    <option value="2"selected>随 机</option>
+                                    <option value="2" selected>随 机</option>
                                 </c:if>
                             </select>
                         </div>
@@ -217,7 +217,7 @@
                                     <option value="3">全天</option>
                                  </c:if>
                                 <c:if test="${dl.openType == 3}">
-                                    <option value="1" selected>白天</option>
+                                    <option value="1" >白天</option>
                                     <option value="2">晚上</option>
                                     <option value="3" selected>全天</option>
                                  </c:if>

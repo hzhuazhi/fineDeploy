@@ -74,38 +74,39 @@
         </form>
     </div>
 
-    <table class="datatable tables">
-        <thead>
-        <tr>
-            <th nowrap>归属手机信息</th>
-            <th nowrap>银行名称</th>
-            <th nowrap>银行卡类型</th>
-            <th nowrap>银行卡账号</th>
-            <th nowrap>开户名</th>
+    <%--<div style="width: 100%;overflow:scroll;">--%>
+        <table class="datatable tables"  style="width: 100%;overflow:scroll;"  >
+            <thead>
+            <tr>
+                <th nowrap>归属手机信息</th>
+                <th nowrap>银行名称</th>
+                <th nowrap>银行卡类型</th>
+                <th nowrap>银行卡账号</th>
+                <th nowrap>开户名</th>
+                <th nowrap>日收款金额</th>
+                <th nowrap>日转账金额</th>
+                <th nowrap>月收款金额</th>
+                <th nowrap>月转账金额</th>
+                <th nowrap>总收款金额</th>
+                <th nowrap>总转账金额</th>
+                <th nowrap>凭证短信号</th>
+                <th nowrap>凭证银行卡尾号</th>
+                <th nowrap>照凭证内容</th>
+                <th nowrap>截取开始字段</th>
+                <th nowrap>截取结束字段</th>
+                <th nowrap>优先级</th>
+                <th nowrap>放量类型</th>
+                <th nowrap>日开关状态</th>
+                <th nowrap>使用状态</th>
+                <th nowrap>创建时间</th>
+                <th nowrap>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    <%--</div>--%>
 
-            <th nowrap>日收款金额</th>
-            <th nowrap>日转账金额</th>
-            <th nowrap>月收款金额</th>
-            <th nowrap>月转账金额</th>
-            <th nowrap>总收款金额</th>
-            <th nowrap>总转账金额</th>
-
-            <th nowrap>凭证短信号</th>
-            <th nowrap>凭证银行卡尾号</th>
-            <th nowrap>照凭证内容</th>
-            <th nowrap>截取开始字段</th>
-            <th nowrap>截取结束字段</th>
-            <th nowrap>优先级</th>
-            <th nowrap>放量类型</th>
-            <th nowrap>日开关状态</th>
-            <th nowrap>使用状态</th>
-            <th nowrap>创建时间</th>
-            <th nowrap>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
 </div>
 
 <script type='text/javascript' charset="utf-8" src='${ctxData}js/common/common2.js'></script>
