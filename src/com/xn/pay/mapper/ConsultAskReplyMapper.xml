@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xn.pay.dao.ConsultAskReplyDao" >
+  <!-- 属性映射 -->
+  <resultMap type="com.xn.pay.model.ConsultAskReply" id="dataMap">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="consult_ask_id" property="consultAskId" jdbcType="BIGINT" />
+    <result column="ask_reply" property="askReply" jdbcType="VARCHAR" />
+    <result column="ask_reply_ads" property="askReplyAds" jdbcType="VARCHAR" />
+    <result column="data_type" property="dataType" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="ts_time" property="tsTime" jdbcType="TIMESTAMP" />
+    <result column="yn" property="yn" jdbcType="BIT" />
+  </resultMap>
+
+  <!-- 定义数据库基本列,只适用代替单表的*-->
+  <sql id="Base_Column_List">
+           a.id, a.consult_ask_id, a.ask_reply, a.ask_reply_ads, a.data_type, a.create_time, a.update_time,
+            a.ts_time, a.yn
+    </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Example_Where_Clause">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="id != 0 and id >0 " >
+        and a.id = #{id}
+      </if>
+      <if test="consultAskId != 0 and consultAskId >0 " >
+        and a.consult_ask_id = #{consultAskId}
+      </if>
+      and a.yn = 0
+    </trim>
+  </sql>
+
+  <!-- 查询条件_id -->
+  <sql id="Example_Where_Clause_id">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="id != 0 and id >0 " >
+        and a.id = #{id}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 查询总数-->
+  <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+    select count(1)
+    from tb_fn_consult_ask_reply a
+    <include refid="Example_Where_Clause"/>
+  </select>
+
+  <!-- 查询分页列表 -->
+  <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_consult_ask_reply a
+    <include refid="Example_Where_Clause"/>
+    order by a.create_time desc
+    limit #{startIndex},#{pageSize}
+  </select>
+
+  <!-- 查询列表-无分页-有条件/有条件 -->
+  <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_consult_ask_reply a
+    <include refid="Example_Where_Clause"/>
+    order by a.create_time desc
+  </select>
+
+  <!-- 根据id查询记录 -->
+  <select id="queryById"  resultMap="dataMap" parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_consult_ask_reply a
+    <include refid="Example_Where_Clause_id"/>
+  </select>
+
+  <!-- 根据条件查询记录 -->
+  <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_consult_ask_reply a
+    <include refid="Example_Where_Clause"/>
+    limit 1
+  </select>
+
+  <!-- 添加记录 -->
+  <insert id="add" parameterType="Object" >
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() as id
+    </selectKey>
+    insert into tb_fn_consult_ask_reply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="consultAskId != null" >
+        consult_ask_id,
+      </if>
+      <if test="askReply != null" >
+        ask_reply,
+      </if>
+      <if test="askReplyAds != null" >
+        ask_reply_ads,
+      </if>
+      <if test="dataType != null" >
+        data_type,
+      </if>
+        create_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="consultAskId != null" >
+        #{consultAskId,jdbcType=BIGINT},
+      </if>
+      <if test="askReply != null" >
+        #{askReply,jdbcType=VARCHAR},
+      </if>
+      <if test="askReplyAds != null" >
+        #{askReplyAds,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null" >
+        #{dataType,jdbcType=BIT},
+      </if>
+      NOW(),
+
+    </trim>
+  </insert>
+
+
+  <!-- 更新记录 -->
+  <update id="update" parameterType="Object">
+    UPDATE tb_fn_consult_ask_reply a
+    <trim prefix="set" suffixOverrides=",">
+      <if test="consultAskId != null" >
+        consult_ask_id = #{consultAskId,jdbcType=BIGINT},
+      </if>
+      <if test="askReply != null" >
+        ask_reply = #{askReply,jdbcType=VARCHAR},
+      </if>
+      <if test="askReplyAds != null" >
+        ask_reply_ads = #{askReplyAds,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null" >
+        data_type = #{dataType,jdbcType=BIT},
+      </if>
+      a.update_time = NOW(),
+    </trim>
+      where id= #{id}
+  </update>
+
+
+  <!-- 主要作用1.逻辑删除，2更新状态 -->
+  <update id="manyOperation" parameterType="Object">
+    update tb_fn_consult_ask_reply a
+    <trim prefix="set" suffixOverrides=",">
+      <if test="useStatus != 0 and useStatus>0  " >
+        a.use_status=#{useStatus},
+      </if>
+      a.update_time=NOW()
+    </trim>
+    <include refid="Example_Where_Clause_id"/>
+  </update>
+
+  <!--逻辑删除数据 -->
+  <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_fn_consult_ask_reply a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id =#{id}
+        and a.yn=0
+    </update>
+
+</mapper>

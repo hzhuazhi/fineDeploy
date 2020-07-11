@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xn.pay.dao.NoticeDao" >
+  <!-- 属性映射 -->
+  <resultMap type="com.xn.pay.model.Notice" id="dataMap">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="notice_name" property="noticeName" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="sketch" property="sketch" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="icon_ads" property="iconAds" jdbcType="VARCHAR" />
+    <result column="page_ads" property="pageAds" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="seat" property="seat" jdbcType="BIT" />
+    <result column="notice_type" property="noticeType" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="ts_time" property="tsTime" jdbcType="TIMESTAMP" />
+    <result column="yn" property="yn" jdbcType="BIT" />
+  </resultMap>
+  <!-- 定义数据库基本列,只适用代替单表的*-->
+  <sql id="Base_Column_List">
+        a.id, a.notice_name, a.title, a.sketch, a.content, a.icon_ads, a.page_ads, a.start_time, a.end_time,
+        a.seat, a.notice_type, a.create_time, a.update_time, a.ts_time, a.yn
+    </sql>
+
+  <!-- 查询条件 -->
+  <sql id="Example_Where_Clause">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="id != 0 and id >0 " >
+        and a.id = #{id}
+      </if>
+      <if test="noticeName != null and noticeName != '' " >
+        and a.notice_name = #{noticeName}
+      </if>
+      <if test="title != null and title != '' " >
+        and a.title = #{title}
+      </if>
+      <if test="content != null and content != '' " >
+        and a.content = #{content}
+      </if>
+      and a.yn = 0
+    </trim>
+  </sql>
+
+  <!-- 查询条件_id -->
+  <sql id="Example_Where_Clause_id">
+    where 1=1
+    <trim  suffixOverrides="," >
+      <if test="id != 0 and id >0 " >
+        and a.id = #{id}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 查询总数-->
+  <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+    select count(1)
+    from tb_fn_notice a
+    <include refid="Example_Where_Clause"/>
+  </select>
+
+  <!-- 查询分页列表 -->
+  <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_notice a
+    <include refid="Example_Where_Clause"/>
+    order by a.create_time desc
+    limit #{startIndex},#{pageSize}
+  </select>
+
+  <!-- 查询列表-无分页-有条件/有条件 -->
+  <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_notice a
+    <include refid="Example_Where_Clause"/>
+    order by a.create_time desc
+  </select>
+
+  <!-- 根据id查询记录 -->
+  <select id="queryById"  resultMap="dataMap" parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_notice a
+    <include refid="Example_Where_Clause_id"/>
+  </select>
+
+  <!-- 根据条件查询记录 -->
+  <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+    select
+    <include refid="Base_Column_List" />
+    from tb_fn_notice a
+    <include refid="Example_Where_Clause"/>
+    limit 1
+  </select>
+
+  <!-- 添加记录 -->
+  <insert id="add" parameterType="Object" >
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() as id
+    </selectKey>
+    insert into tb_fn_notice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="noticeName != null" >
+        notice_name,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="sketch != null" >
+        sketch,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="iconAds != null" >
+        icon_ads,
+      </if>
+      <if test="pageAds != null" >
+        page_ads,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="seat != null" >
+        seat,
+      </if>
+      <if test="noticeType != null" >
+        notice_type,
+      </if>
+        create_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="noticeName != null" >
+        #{noticeName,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="sketch != null" >
+        #{sketch,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="iconAds != null" >
+        #{iconAds,jdbcType=VARCHAR},
+      </if>
+      <if test="pageAds != null" >
+        #{pageAds,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="seat != null" >
+        #{seat,jdbcType=BIT},
+      </if>
+      <if test="noticeType != null" >
+        #{noticeType,jdbcType=BIT},
+      </if>
+      NOW(),
+    </trim>
+  </insert>
+
+
+  <!-- 更新记录 -->
+  <update id="update" parameterType="Object">
+    UPDATE tb_fn_notice a
+    <trim prefix="set" suffixOverrides=",">
+        <if test="consultId != null" >
+            a.consult_id = #{consultId,jdbcType=BIGINT},
+        </if>
+        <if test="did != null" >
+            a.did = #{did,jdbcType=BIGINT},
+        </if>
+        <if test="title != null" >
+            a.title = #{title,jdbcType=VARCHAR},
+        </if>
+        <if test="ask != null" >
+            a.ask = #{ask,jdbcType=VARCHAR},
+        </if>
+        <if test="askAds != null" >
+            a.ask_ads = #{askAds,jdbcType=VARCHAR},
+        </if>
+        <if test="replyStatus != null" >
+            a.reply_status = #{replyStatus,jdbcType=BIT},
+        </if>
+        a.update_time = NOW(),
+    </trim>
+      where id= #{id}
+  </update>
+
+
+  <!-- 主要作用1.逻辑删除，2更新状态 -->
+  <update id="manyOperation" parameterType="Object">
+    update tb_fn_notice a
+    <trim prefix="set" suffixOverrides=",">
+      <if test="useStatus != 0 and useStatus>0  " >
+        a.use_status=#{useStatus},
+      </if>
+      a.update_time=NOW()
+    </trim>
+    <include refid="Example_Where_Clause_id"/>
+  </update>
+
+  <!--逻辑删除数据 -->
+  <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_fn_notice a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id =#{id}
+        and a.yn=0
+    </update>
+
+</mapper>
