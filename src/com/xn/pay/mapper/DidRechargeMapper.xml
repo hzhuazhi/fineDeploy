@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.pay.dao.DidRechargeDao">
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.pay.model.DidRechargeModel" id="dataMap">
+        <id property="id" column="id" />
+        <result property="did" column="did" />
+        <result property="orderNo" column="order_no" />
+        <result property="moneyId" column="money_id" />
+        <result property="orderMoney" column="order_money" />
+        <result property="distributionMoney" column="distribution_money" />
+        <result property="bankId" column="bank_id" />
+        <result property="pictureAds" column="picture_ads" />
+        <result property="invalidTime" column="invalid_time" />
+        <result property="orderStatus" column="order_status" />
+        <result property="depositor" column="depositor" />
+        <result property="depositMoney" column="deposit_money" />
+        <result property="depositTime" column="deposit_time" />
+        <result property="lastNum" column="last_num" />
+        <result property="workType" column="work_type" />
+        <result property="appealStatus" column="appeal_status" />
+        <result property="appealOrigin" column="appeal_origin" />
+        <result property="dataType" column="data_type" />
+        <result property="checkStatus" column="check_status" />
+        <result property="checkInfo" column="check_info" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="yn" column="yn" />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.did,a.order_no,a.money_id,a.order_money,a.distribution_money,a.bank_id,a.picture_ads,a.invalid_time,a.order_status,
+        a.depositor,a.deposit_money,a.deposit_time,a.last_num,a.work_type,a.appeal_status,a.appeal_origin,a.data_type,a.check_status,a.check_info,
+        a.curday,a.curhour,a.curminute,a.run_num,a.run_status,
+        a.create_time,a.update_time,a.yn
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="did != 0 and did >0 " >
+                and a.did = #{did}
+            </if>
+            <if test="orderNo != null and orderNo != '' " >
+                and a.order_no = #{orderNo}
+            </if>
+            <if test="bankId != 0 and bankId >0 " >
+                and a.bank_id = #{bankId}
+            </if>
+            <if test="orderStatus != 0 and orderStatus >0 " >
+                and a.order_status = #{orderStatus}
+            </if>
+            <if test="depositor != null and depositor != '' " >
+                and a.depositor = #{depositor}
+            </if>
+            <if test="workType != 0 and workType >0 " >
+                and a.work_type = #{workType}
+            </if>
+            <if test="appealStatus != 0 and appealStatus >0 " >
+                and a.appeal_status = #{appealStatus}
+            </if>
+            <if test="checkStatus != 0 and checkStatus >0 " >
+                and a.check_status = #{checkStatus}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_fn_did_recharge a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fn_did_recharge a
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fn_did_recharge a
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fn_did_recharge a
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fn_did_recharge a
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+    <!-- 添加记录 -->
+    <insert id="add" parameterType="Object" >
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into tb_fn_did_recharge
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="did != 0 and did > 0 " >
+                did,
+            </if>
+            <if test="orderNo != null and orderNo != '' " >
+                order_no,
+            </if>
+            <if test="moneyId != 0 and moneyId > 0 " >
+                money_id,
+            </if>
+            <if test="orderMoney != null and orderMoney != '' " >
+                order_money,
+            </if>
+            <if test="distributionMoney != null and distributionMoney != '' " >
+                distribution_money,
+            </if>
+            <if test="bankId != 0 and bankId > 0 " >
+                bank_id,
+            </if>
+            <if test="pictureAds != null and pictureAds != '' " >
+                picture_ads,
+            </if>
+            <if test="invalidTime != null and invalidTime != '' " >
+                invalid_time,
+            </if>
+            create_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="did != 0 and did > 0 " >
+                <![CDATA[  #{did}, ]]>
+            </if>
+            <if test="orderNo != null and orderNo != '' " >
+                <![CDATA[  #{orderNo}, ]]>
+            </if>
+            <if test="moneyId != 0 and moneyId > 0 " >
+                <![CDATA[  #{moneyId}, ]]>
+            </if>
+            <if test="orderMoney != null and orderMoney != '' " >
+                <![CDATA[  #{orderMoney}, ]]>
+            </if>
+            <if test="distributionMoney != null and distributionMoney != '' " >
+                <![CDATA[  #{distributionMoney}, ]]>
+            </if>
+            <if test="bankId != 0 and bankId > 0 " >
+                <![CDATA[  #{bankId}, ]]>
+            </if>
+            <if test="pictureAds != null and pictureAds != '' " >
+                <![CDATA[  #{pictureAds}, ]]>
+            </if>
+            <if test="invalidTime != null and invalidTime != '' " >
+                <![CDATA[  #{invalidTime}, ]]>
+            </if>
+            <![CDATA[  NOW(), ]]>
+        </trim>
+    </insert>
+
+
+    <!-- 更新记录 -->
+    <update id="update" parameterType="Object">
+        UPDATE tb_fn_did_recharge a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="did != 0 and did > 0 " >
+                a.did = #{did},
+            </if>
+            <if test="orderNo != null and orderNo != '' " >
+                a.order_no = #{orderNo},
+            </if>
+            <if test="moneyId != 0 and moneyId >0 " >
+                a.money_id = #{moneyId},
+            </if>
+            <if test="orderMoney != null and orderMoney != '' " >
+                a.order_money = #{orderMoney},
+            </if>
+            <if test="distributionMoney != null and distributionMoney != '' " >
+                a.distribution_money = #{distributionMoney},
+            </if>
+            <if test="bankId != 0 and bankId > 0 " >
+                a.bank_id = #{bankId},
+            </if>
+            <if test="pictureAds != null and pictureAds != '' " >
+                a.picture_ads = #{pictureAds},
+            </if>
+            <if test="orderStatus != 0  and orderStatus >0 " >
+                a.order_status = #{orderStatus},
+            </if>
+            <if test="appealStatus != 0  and appealStatus > 0 " >
+                a.appeal_status = #{appealStatus},
+            </if>
+            <if test="appealOrigin != null and appealOrigin != '' " >
+                a.appeal_origin = #{appealOrigin},
+            </if>
+            <if test="checkStatus != 0  and checkStatus > 0 " >
+                a.check_status = #{checkStatus},
+            </if>
+            <if test="checkInfo != null and checkInfo != '' " >
+                a.check_info = #{checkInfo},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        <include refid="Example_Where_Clause_id"/>
+    </update>
+
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        update tb_fn_did_recharge a
+        <trim prefix="set" suffixOverrides=",">
+            a.yn = #{yn},
+            a.update_time = NOW()
+        </trim>
+        <include refid="Example_Where_Clause_id"/>
+    </update>
+
+    <!--逻辑删除数据 -->
+    <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_fn_did_recharge a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id =#{id}
+        and a.yn=0
+    </update>
+
+</mapper>
