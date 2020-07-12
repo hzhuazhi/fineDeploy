@@ -6,6 +6,7 @@ import com.xn.common.util.HtmlUtil;
 import com.xn.pay.model.DidRechargeModel;
 import com.xn.pay.service.DidRechargeService;
 import com.xn.system.entity.Account;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,7 +52,7 @@ public class DidRechargeController extends BaseController {
         List<DidRechargeModel> dataList = new ArrayList<DidRechargeModel>();
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
-            if (account.getRoleId() != ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
+            if (account.getRoleId() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
                 dataList = didRechargeService.queryByList(model);
             }
             
@@ -69,7 +70,7 @@ public class DidRechargeController extends BaseController {
         List<DidRechargeModel> dataList = new ArrayList<DidRechargeModel>();
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
-            if (account.getRoleId() != ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
+            if (account.getRoleId() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
                 dataList = didRechargeService.queryAllList(model);
             }
 
@@ -116,7 +117,7 @@ public class DidRechargeController extends BaseController {
     public String jumpUpdate(Model model, long id, Integer op) {
         DidRechargeModel didRechargeModel = new DidRechargeModel();
         didRechargeModel.setId(id);
-        model.addAttribute("didRecharge", didRechargeService.queryById(didRechargeModel));
+        model.addAttribute("account", didRechargeService.queryById(didRechargeModel));
 //        model.addAttribute("account", mobileCardService.queryById(atModel));
 //        model.addAttribute("op", op);
         return "pay/didrecharge/didrechargeEdit";
@@ -129,7 +130,16 @@ public class DidRechargeController extends BaseController {
     public void update(HttpServletRequest request, HttpServletResponse response,DidRechargeModel bean, String op) throws Exception {
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
-            didRechargeService.update(bean);
+            DidRechargeModel dataBean = new DidRechargeModel();
+            dataBean.setId(bean.getId());
+            dataBean.setCheckStatus(bean.getCheckStatus());
+            if (!StringUtils.isBlank(bean.getCheckInfo())){
+                dataBean.setCheckInfo(bean.getCheckInfo());
+            }
+            if (bean.getCheckStatus() == 4){
+                dataBean.setOrderStatus(3);
+            }
+            didRechargeService.update(dataBean);
             sendSuccessMessage(response, "保存成功~");
         }else {
             sendFailureMessage(response, "登录超时,请重新登录在操作!");

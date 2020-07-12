@@ -28,26 +28,18 @@
                 <input type="hidden" id="id" name="id" value="${dl.id}">
                 <li style="border-top: none;">
                     <div class="formTextDiv">
-                        <span class="require" ><font color="red">*</font>银行名称</span>
+                        <span class="require" ><font color="red">*</font>订单号</span>
                     </div>
                     <div class="formCtrlDiv">
-                        <input type="text" class="formInput" id="bankName" name="bankName" value="${dl.bankName}"	maxlength="240" />
+                        <input type="text" class="formInput" id="bankName" name="bankName" value="${dl.orderNo}" disabled	maxlength="240" />
                     </div>
                 </li>
                 <li style="border-top: none;">
                     <div class="formTextDiv">
-                        <span class="require"><font color="red">*</font>支行名称</span>
+                        <span class="require"><font color="red">*</font>银行名称</span>
                     </div>
                     <div class="formCtrlDiv">
-                        <input type="text" class="formInput" id="subbranchName" name="subbranchName" value="${dl.subbranchName}" 	maxlength="240" />
-                    </div>
-                </li>
-                <li style="border-top: none;">
-                    <div class="formTextDiv">
-                        <span class="require"><font color="red">*</font>开户名</span>
-                    </div>
-                    <div class="formCtrlDiv">
-                        <input type="text" class="formInput" id="accountName" name="accountName" value="${dl.accountName}" maxlength="240" />
+                        <input type="text" class="formInput" id="bankName" name="bankName" value="${dl.bankName}" disabled 	maxlength="240" />
                     </div>
                 </li>
                 <li style="border-top: none;">
@@ -55,7 +47,15 @@
                         <span class="require"><font color="red">*</font>银行卡号</span>
                     </div>
                     <div class="formCtrlDiv">
-                        <input type="text" class="formInput" id="bankCard" name="bankCard" value="${dl.bankCard}" 	maxlength="240" />
+                        <input type="text" class="formInput" id="bankCard" name="bankCard" value="${dl.bankCard}" disabled maxlength="240" />
+                    </div>
+                </li>
+                <li style="border-top: none;">
+                    <div class="formTextDiv">
+                        <span class="require"><font color="red">*</font>开户人</span>
+                    </div>
+                    <div class="formCtrlDiv">
+                        <input type="text" class="formInput" id="accountName" name="accountName" value="${dl.accountName}" disabled maxlength="240" />
                     </div>
                 </li>
 
@@ -63,33 +63,143 @@
 
                 <li style="border-top: none;">
                     <div class="formTextDiv">
-                        <span class="require">所在省份</span>
+                        <span class="require">订单金额</span>
                     </div>
                     <div class="formCtrlDiv">
-                        <input type="text" class="formInput" id="province" name="province" value="${dl.province}" 	maxlength="240" />
+                        <input type="text" class="formInput" id="orderMoney" name="orderMoney" value="${dl.orderMoney}"  disabled maxlength="240" />
                     </div>
                 </li>
                 <li style="border-top: none;">
                     <div class="formTextDiv">
-                        <span class="require">所在城市</span>
+                        <span class="require">超时时间</span>
                     </div>
                     <div class="formCtrlDiv">
-                        <input type="text" class="formInput" id="city" name="city" value="${dl.city}" 	maxlength="240" />
+                        <input type="text" class="formInput" id="invalidTime" name="invalidTime" value="${dl.invalidTime}"  disabled maxlength="240" />
+                    </div>
+                </li>
+
+                <li style="border-top: none;">
+                    <div class="formTextDiv">
+                        <span class="require">超时时间</span>
+                    </div>
+                    <div class="formCtrlDiv">
+                        <input type="text" class="formInput" id="invalidTime" name="invalidTime" value="${dl.invalidTime}"  disabled maxlength="240" />
                     </div>
                 </li>
                 <li style="border-top: none;">
                     <div class="formTextDiv">
-                        <span class="require">备注</span>
+                        <span class="require">超时时间</span>
                     </div>
                     <div class="formCtrlDiv">
-                        <input type="text" class="formInput" id="remark" name="remark" value="${dl.remark}" 	maxlength="240" />
+                        <input type="text" class="formInput" id="invalidTime" name="invalidTime" value="${dl.invalidTime}"  disabled maxlength="240" />
+                    </div>
+                </li>
+                <li style="border-top: none;">
+                    <div class="formTextDiv">
+                        <span class="require">打款人名称</span>
+                    </div>
+                    <div class="formCtrlDiv">
+                        <input type="text" class="formInput" id="depositor" name="depositor" value="${dl.depositor}"  disabled maxlength="240" />
+                    </div>
+                </li>
+                <li style="border-top: none;">
+                    <div class="formTextDiv">
+                        <span class="require">打款金额</span>
+                    </div>
+                    <div class="formCtrlDiv">
+                        <input type="text" class="formInput" id="depositMoney" name="depositMoney" value="${dl.depositMoney}"  disabled maxlength="240" />
+                    </div>
+                </li>
+
+                <li style="border-top: none;">
+                    <div class="formTextDiv">
+                        <span class="require">打款尾号</span>
+                    </div>
+                    <div class="formCtrlDiv">
+                        <input type="text" class="formInput" id="lastNum" name="lastNum" value="${dl.lastNum}"  disabled maxlength="240" />
+                    </div>
+                </li>
+                <li style="border-top: none;">
+                    <div class="formTextDiv">
+                        <span class="require">图片</span>
+                    </div>
+                    <div class="formCtrlDiv">
+                        <img src="${dl.pictureAds}" alt="">
+                        <input type="text" class="formInput" id="depositMoney" name="depositMoney" value="${dl.depositMoney}"  disabled maxlength="240" />
+                    </div>
+                </li>
+
+                <li style="border-top: none;">
+                    <div class="formTextDiv">
+                        <span class="require">订单状态</span>
+                    </div>
+                    <div class="formCtrlDiv">
+                        <select id="orderStatus" name="orderStatus" disabled>
+                            <option value="">===请选择===</option>
+                            <c:if test="${dl.orderStatus == -1}">
+                                <option value="-1" selected="selected">申诉</option>
+                            </c:if>
+                            <c:if test="${dl.orderStatus == 1}">
+                                <option value="1" selected="selected">初始化</option>
+                            </c:if>
+                            <c:if test="${dl.orderStatus == 2}">
+                                <option value="2" selected="selected">超时</option>
+                            </c:if>
+                            <c:if test="${dl.orderStatus == 3}">
+                                <option value="3" selected="selected">成功</option>
+                            </c:if>
+                        </select>
+                    </div>
+                </li>
+
+                <li style="border-top: none;">
+                    <div class="formTextDiv">
+                        <span class="require" ><font color="red">*</font>审核状态</span>
+                    </div>
+                    <div class="formCtrlDiv">
+                        <select id="checkStatus" name="checkStatus">
+                            <option value="">===请选择===</option>
+                            <c:if test="${dl.checkStatus == 1}">
+                                <option value="1" selected="selected">初始化</option>
+                                <option value="2">审核中</option>
+                                <option value="3">审核失败</option>
+                                <option value="4">审核成功</option>
+                            </c:if>
+                            <c:if test="${dl.checkStatus == 2}">
+                                <option value="1">初始化</option>
+                                <option value="2" selected="selected">审核中</option>
+                                <option value="3">审核失败</option>
+                                <option value="4">审核成功</option>
+                            </c:if>
+                            <c:if test="${dl.checkStatus == 3}">
+                                <option value="1">初始化</option>
+                                <option value="2">审核中</option>
+                                <option value="3" selected="selected">审核失败</option>
+                                <option value="4">审核成功</option>
+                            </c:if>
+                            <c:if test="${dl.checkStatus == 4}">
+                                <option value="1">初始化</option>
+                                <option value="2">审核中</option>
+                                <option value="3">审核失败</option>
+                                <option value="4" selected="selected">审核成功</option>
+                            </c:if>
+                        </select>
+                    </div>
+                </li>
+
+                <li style="border-top: none;">
+                    <div class="formTextDiv">
+                        <span class="require">审核备注</span>
+                    </div>
+                    <div class="formCtrlDiv">
+                        <input type="text" class="formInput" id="checkInfo" name="checkInfo" value="${dl.checkInfo}" 	maxlength="240" />
                     </div>
                 </li>
                 <li>
                     <div class="" style="margin-bottom: 20px; margin-top: 20px;margin-left:200px;">
-                        <input type="submit" class="formBtn" value="修 改" /> <span>
-						</span> <input type="reset" class="formBtn" value="重  置" />
-                        <input type="button" onClick="javascript :history.back(-1);" class="formBtn" value=" 返 回 " />
+                        <input type="submit" class="dataTableBtn dataTableDeleteBtn" value="修 改" /> <span>
+						</span> <input type="reset" class="dataTableBtn dataTableDeleteBtn" value="重  置" />
+                        <input type="button" onClick="javascript :history.back(-1);" class="dataTableBtn dataTableDeleteBtn" value=" 返 回 " />
                     </div>
                 </li>
             </ul>
@@ -102,45 +212,28 @@
         //密码输入验证
         $("#addSupplierForm").validate({
             rules:{
-                bankName:{
-                    required:true,
-                    maxlength:80
-                },
-                accountName:{
-                    required:true,
-                    maxlength:80
-                },
-                bankCard:{
-                    required:true,
-                    maxlength:80
+                checkStatus:{
+                    required:true
                 }
+
             },
             messages: {
-                bankName:{
-                    required : "银行名称不能为空!",
-                    maxlength : "银行名称长度最多是80个字符!"
-                },
-                accountName:{
-                    required:"开户名不能为空!",
-                    number:"开户名长度最多是80个字符!"
-                },
-                bankCard:{
-                    required:"银行卡号不能为空!",
-                    number:"银行卡号长度最多是80个字符!"
+                checkStatus:{
+                    required : "请选择审核状态!"
                 }
             },
 
             submitHandler : function() {
                 var formData = $("#addSupplierForm").serialize();
                 $.ajax({
-                    url : ctx+ "/bank/update.do",
+                    url : ctx+ "/didrecharge/update.do",
                     type : 'post',
                     dataType : 'json',
                     data :formData,
                     success : function(data) {
                         if (data.success) {
                             alert("修改成功！");
-                            window.location.href = ctx + "/bank/list.do";
+                            window.location.href = ctx + "/didrecharge/list.do";
                         } else {
                             art.alert(data.msg);
                         }

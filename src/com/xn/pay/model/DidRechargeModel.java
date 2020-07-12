@@ -158,6 +158,11 @@ public class DidRechargeModel extends BasePage implements Serializable {
     private int curdayEnd;
 
     /**
+     * 银行名称
+     */
+    private String bankName;
+
+    /**
      * 银行卡卡号
      */
     private String bankCard;
@@ -166,6 +171,7 @@ public class DidRechargeModel extends BasePage implements Serializable {
      * 开户名
      */
     private String accountName;
+
 
     public DidRechargeModel(){
 
@@ -425,5 +431,13 @@ public class DidRechargeModel extends BasePage implements Serializable {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 }

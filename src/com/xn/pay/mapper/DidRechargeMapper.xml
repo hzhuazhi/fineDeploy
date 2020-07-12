@@ -26,13 +26,17 @@
         <result property="createTime" column="create_time" />
         <result property="updateTime" column="update_time" />
         <result property="yn" column="yn" />
+        <result property="bankName" column="bank_name" />
+        <result property="bankCard" column="bank_card" />
+        <result property="accountName" column="account_name" />
     </resultMap>
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
         a.id,a.did,a.order_no,a.money_id,a.order_money,a.distribution_money,a.bank_id,a.picture_ads,a.invalid_time,a.order_status,
         a.depositor,a.deposit_money,a.deposit_time,a.last_num,a.work_type,a.appeal_status,a.appeal_origin,a.data_type,a.check_status,a.check_info,
         a.curday,a.curhour,a.curminute,a.run_num,a.run_status,
-        a.create_time,a.update_time,a.yn
+        a.create_time,a.update_time,a.yn,
+        b.bank_name,b.bank_card,b.account_name
     </sql>
 
     <!-- 查询条件 -->
@@ -66,6 +70,18 @@
             <if test="checkStatus != 0 and checkStatus >0 " >
                 and a.check_status = #{checkStatus}
             </if>
+            <if test="curdayStart != 0 and curdayStart >0 and curdayEnd != 0 and curdayEnd >0 " >
+                and a.curday >= #{curdayStart} and a.curday &lt;= #{curdayEnd}
+            </if>
+            <if test="bankName != null and bankName != '' " >
+                and b.bank_name = #{bankName}
+            </if>
+            <if test="bankCard != null and bankCard != '' " >
+                and b.bank_card = #{bankCard}
+            </if>
+            <if test="accountName != null and accountName != '' " >
+                and b.account_name = #{accountName}
+            </if>
             and a.yn =  0
         </trim>
     </sql>
@@ -84,7 +100,7 @@
     <!-- 查询总数-->
     <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
         select count(1)
-        from tb_fn_did_recharge a
+        from tb_fn_did_recharge a left join tb_fn_bank b on a.bank_id = b.id
         <include refid="Example_Where_Clause"/>
     </select>
 
@@ -92,7 +108,7 @@
     <select id="queryByList" resultMap="dataMap"  parameterType="Object">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_did_recharge a
+        from tb_fn_did_recharge a left join tb_fn_bank b on a.bank_id = b.id
         <include refid="Example_Where_Clause"/>
         order by a.create_time desc
         limit #{startIndex},#{pageSize}
@@ -102,7 +118,7 @@
     <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_did_recharge a
+        from tb_fn_did_recharge a left join tb_fn_bank b on a.bank_id = b.id
         <include refid="Example_Where_Clause"/>
         order by a.create_time desc
     </select>
@@ -111,7 +127,7 @@
     <select id="queryById"  resultMap="dataMap" parameterType="Object">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_did_recharge a
+        from tb_fn_did_recharge a left join tb_fn_bank b on a.bank_id = b.id
         <include refid="Example_Where_Clause_id"/>
     </select>
 
@@ -119,7 +135,7 @@
     <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_did_recharge a
+        from tb_fn_did_recharge a left join tb_fn_bank b on a.bank_id = b.id
         <include refid="Example_Where_Clause"/>
         limit 1
     </select>
