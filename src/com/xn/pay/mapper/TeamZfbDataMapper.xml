@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.pay.dao.TeamZfbDataDao">
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.pay.model.TeamZfbDataModel" id="dataMap">
+        <result property="nickname" column="nickname" />
+        <result property="acNum" column="ac_num" />
+        <result property="icode" column="icode" />
+        <result property="totalMoney" column="total_money" />
+        <result property="balance" column="balance" />
+        <result property="ownId" column="own_id" />
+        <result property="zfbAcNum" column="zfb_ac_num" />
+        <result property="totalSucMoney" column="total_suc_money" />
+        <result property="todaySucMoney" column="today_suc_money" />
+        <result property="isHave" column="is_have" />
+        <result property="createTime" column="create_time" />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="acNum != null and acNum != '' " >
+                and a.ac_num = #{acNum}
+            </if>
+            <if test="ownId != 0 and ownId >0 " >
+                and a.own_id = #{ownId}
+            </if>
+            <if test="zfbAcNum != null and zfbAcNum != '' " >
+                and b.ac_num = #{zfbAcNum}
+            </if>
+            <if test="isHave != 0 and isHave >0 " >
+                and b.id is null
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1) from (
+            select a3.id,a3.nickname,a3.ac_num,a3.icode,a3.total_money,a3.balance,a3.own_id,
+            a3.zfb_ac_num,a3.is_have,ifnull(a3.total_suc_money, '0.00') as total_suc_money,ifnull(a4.today_suc_money, '0.00') as today_suc_money from (
+            select a1.id,a1.nickname,a1.ac_num,a1.icode,a1.total_money,a1.balance,a1.own_id,
+            a1.zfb_ac_num,a1.is_have,a2.total_suc_money from (
+            select a.id,a.nickname,a.ac_num,a.icode,a.total_money,a.balance,a.own_id,
+            b.ac_num as zfb_ac_num,ifnull(b.id, -1) as is_have
+            from tb_fn_did a
+            left join tb_fn_did_collection_account b on a.id = b.did and b.yn =0
+                <include refid="Example_Where_Clause"/>
+            order by a.create_time desc
+            )a1 left join (
+            select b.did,ifnull(sum(convert(b.order_money,decimal(19,2))), '0.00') as total_suc_money from tb_fn_order b
+            where b.yn =0
+            group by b.did
+            )a2 on a1.id = a2.did
+            ) a3 left join (
+            select c.did,ifnull(sum(convert(c.order_money,decimal(19,2))), '0.00') as today_suc_money from tb_fn_order c
+            where c.yn =0
+            and c.curday = #{curday}
+            group by c.did
+            )a4 on a3.id = a4.did
+        )a
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select a3.id,a3.nickname,a3.ac_num,a3.icode,a3.total_money,a3.balance,a3.own_id,a3.create_time,
+        a3.zfb_ac_num,a3.is_have,ifnull(a3.total_suc_money, '0.00') as total_suc_money,ifnull(a4.today_suc_money, '0.00') as today_suc_money from (
+        select a1.id,a1.nickname,a1.ac_num,a1.icode,a1.total_money,a1.balance,a1.own_id,a1.create_time,
+        a1.zfb_ac_num,a1.is_have,a2.total_suc_money from (
+        select a.id,a.nickname,a.ac_num,a.icode,a.total_money,a.balance,a.own_id,a.create_time,
+        b.ac_num as zfb_ac_num,ifnull(b.id, -1) as is_have
+        from tb_fn_did a
+        left join tb_fn_did_collection_account b on a.id = b.did and b.yn =0
+          <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        )a1 left join (
+        select b.did,ifnull(sum(convert(b.order_money,decimal(19,2))), '0.00') as total_suc_money from tb_fn_order b
+        where b.yn =0
+        group by b.did
+        )a2 on a1.id = a2.did
+        ) a3 left join (
+        select c.did,ifnull(sum(convert(c.order_money,decimal(19,2))), '0.00') as today_suc_money from tb_fn_order c
+        where c.yn =0
+        and c.curday = #{curday}
+        group by c.did
+        )a4 on a3.id = a4.did
+        order by a3.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+
+
+</mapper>
