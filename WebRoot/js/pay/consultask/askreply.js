@@ -11,40 +11,80 @@ var account = {
         delete_url: ctx+ "/askreply/delete.do",
         manyOperation_url: ctx+ "/askreply/manyOperation.do"
     },
+
+
+    //添加修改验证参数
+    validate:{
+        rules:{
+            ask:{
+                required:true,
+                maxlength:600
+            },
+        },
+        messages: {
+            ask:{
+                required : "回复内容不能为空",
+                maxlength : "回复内容长度最多是20个汉字或字母"
+            },
+        },
+        submitHandler : function() {
+
+            //阻止表单提交
+        }
+    },
+
     //列表显示参数
     list:[
-        {"data":"did",},
-        {"data":"title",},
-        {"data":"ask",},
-        {"data":"askAds",
+        {"data":"askType",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 var html = '';
-                html='<img src="'+oData.askAds+'" style="height: 200px;width: 200px">';
-
+                if(oData.askType==1){
+                    html='<span >超时未放币</span>';
+                }else if(oData.askType==2){
+                    html='<span >超时未付款</span>';
+                }else if(oData.askType==3){
+                    html='<span >充提币问题</span>';
+                }else if(oData.askType==4){
+                    html='<span >修改支付宝问题</span>';
+                }else if(oData.askType==5){
+                    html='<span >其他问题</span>';
+                }
                 $(nTd).html(html);
             }
-        },
-        {"data":"replyStatus",
+         },
+        {"data":"askContent",},
+        {"data":"askCountAds",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 var html = '';
-                if(oData.replyStatus==1){
-                    html='<span style="color: #9D080D">待处理</span>';
-                }else if(oData.replyStatus==2){
-                    html='<span style="color: #399d19">回答完成</span>';
+                if(oData.askCountAds!=null&&oData.askCountAds!=""&&oData.askCountAds!=undefined&&oData.askCountAds!="undefined"){
+                    html='<img src="'+oData.askCountAds+'" style="height: 200px;width: 200px">';
+                }
+                $(nTd).html(html);
+            }
+         },
+        {"data":"askReply",},
+        {"data":"askReplyAds",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                var html = '';
+                if(oData.askReplyAds!=null&&oData.askReplyAds!=""&&oData.askReplyAds!=undefined&&oData.askReplyAds!="undefined"){
+                    html='<img src="'+oData.askReplyAds+'" style="height: 200px;width: 200px">';
                 }
                 $(nTd).html(html);
             }
         },
         {"data":"createTime",},
-        {"data":"updateTime",},
-        {"data":"id",
+        {"data":"dataType",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 var html = '';
-                html+= '<a class = "dataTableBtn dataTableDeleteBtn " href="'+ctx+'/askreply/jumpUpdate.do?id='+oData.id+'"> 查看 </a>'
-                    +' <a class = "dataTableBtn dataTableResetBtn"  directkey="' + oData.id + '" href = "javascript:void(0);">删除 </a>';
+                if(oData.dataType==1){
+                    html='<span style="color: #9D080D">问</span>';
+                }else if(oData.dataType==2){
+                    html='<span style="color: #4aff1a">回答</span>';
+                }
                 $(nTd).html(html);
             }
-        }
+        },
+
     ],
     // 查询条件，aoData是必要的。其他的就是对应的实体类字段名，因为条件查询是把数据封装在实体类中的。
     condJsonData : {
@@ -135,8 +175,173 @@ var account = {
     //     });
     // }
 
+
+
 }
 
 $(function(){
     account.indexInit();
+
+    // 跳出dialog  elementId:div层的id名称  ；dialogTitle:弹出来的dialog名称（主题）
+    function showDialog(elementId,dialogTitle,okFunction){
+        dialog = art.dialog.get(elementId);
+        if(!dialog){
+            dialog = art.dialog.get(elementId);
+            if(dialog)
+                dialog.close();
+
+            opt = {
+                id : elementId,
+                title : dialogTitle,
+                content : document.getElementById(elementId),
+                cancel : true,
+                padding : 5,
+                lock : true
+            };
+
+            newOpt = ($.isPlainObject(okFunction) || !okFunction) ? $.extend(true,{},opt,okFunction) : $.extend({},opt);
+            art.dialog(newOpt);
+        }
+        $(".d-content").css("padding","4px 18px");
+    }
+// 关闭模式对话窗    elementId:div层的id名称
+    function closeDialog(elementId){
+        dialog = art.dialog.get(elementId);
+        dialog.close();
+    }
+
+//跳出dialog  elementId:div层的id名称  ；dialogTitle:弹出来的dialog名称（主题）
+    function commonShowDialog(elementId,dialogTitle,functionName){
+        dialog = art.dialog.get(elementId);
+        if(!dialog){
+            dialog = art.dialog.get(elementId);
+            if(dialog)
+                dialog.close();
+            art.dialog({
+                id : elementId,
+                title : dialogTitle,
+                content : document.getElementById(elementId),
+                lock: true,
+                cancel:true,
+                ok:function(){
+                    functionName();
+                    return false;
+                }
+            });
+        }
+    }
+    function openDialog(elementId,dialogTitle){
+        dialog = art.dialog.get(elementId);
+        if(!dialog){
+            dialog = art.dialog.get(elementId);
+            if(dialog)
+                dialog.close();
+
+            opt = {
+                id : elementId,
+                title : dialogTitle,
+                content : document.getElementById(elementId),
+                padding : 5,
+                lock : true
+            };
+
+            newOpt = $.extend({},opt);
+            art.dialog(newOpt);
+        }
+        $(".d-content").css("padding","4px 18px");
+    }
+
+
+
 })
+
+function sava() {
+    var consultAskId = $("#consultAskId").val();
+    var askReply = $("#askReply").val();
+
+
+    var queryObj = {
+        'askReply': askReply,
+        'consultAskId': consultAskId
+    };
+
+    var url = account.url.add_url;
+    // formData.add("consultAskId",id);
+
+    $.ajax({
+        url : url,
+        type : 'post',
+        dataType : 'json',
+        data :queryObj,
+        success : function(data) {
+            if(data.success){
+
+                parentId = 0;
+                var datas = {
+                    'consultAskId': consultAskId
+                };
+                var listInfo=[
+                    {"data":"askType",
+                        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            var html = '';
+                            if(oData.askType==1){
+                                html='<span >超时未放币</span>';
+                            }else if(oData.askType==2){
+                                html='<span >超时未付款</span>';
+                            }else if(oData.askType==3){
+                                html='<span >充提币问题</span>';
+                            }else if(oData.askType==4){
+                                html='<span >修改支付宝问题</span>';
+                            }else if(oData.askType==5){
+                                html='<span >其他问题</span>';
+                            }
+                            $(nTd).html(html);
+                        }
+                    },
+                    {"data":"askContent",},
+                    {"data":"askCountAds",
+                        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            var html = '';
+                            if(oData.askCountAds!=null&&oData.askCountAds!=""&&oData.askCountAds!=undefined&&oData.askCountAds!="undefined"){
+                                html='<img src="'+oData.askCountAds+'" style="height: 200px;width: 200px">';
+                            }
+                            $(nTd).html(html);
+                        }
+                    },
+                    {"data":"askReply",},
+                    {"data":"askReplyAds",
+                        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            var html = '';
+                            if(oData.askReplyAds!=null&&oData.askReplyAds!=""&&oData.askReplyAds!=undefined&&oData.askReplyAds!="undefined"){
+                                html='<img src="'+oData.askReplyAds+'" style="height: 200px;width: 200px">';
+                            }
+                            $(nTd).html(html);
+                        }
+                    },
+                    {"data":"createTime",},
+                    {"data":"dataType",
+                        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            var html = '';
+                            if(oData.dataType==1){
+                                html='<span style="color: #9D080D">问</span>';
+                            }else if(oData.dataType==2){
+                                html='<span style="color: #4aff1a">回答</span>';
+                            }
+                            $(nTd).html(html);
+                        }
+                    },
+
+                ];
+                common.showDatas(datas,listInfo);
+                promptMessage ('保存成功！','success',true);
+                closeDialog('show');
+
+            }else{
+                promptMessage(data.msg, 'warning', false);
+            }
+
+        }
+    });
+}
+
+

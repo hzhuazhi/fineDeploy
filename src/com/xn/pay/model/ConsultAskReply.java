@@ -38,7 +38,7 @@ public class ConsultAskReply  extends BasePage {
      *
      * @mbggenerated
      */
-    private Boolean dataType;
+    private Integer dataType;
 
     /**
      * 创建时间
@@ -66,7 +66,41 @@ public class ConsultAskReply  extends BasePage {
      *
      * @mbggenerated
      */
-    private Boolean yn;
+    private Integer yn;
+
+    /**
+     * 标题
+     */
+    private  String  askTitle;
+    /**
+     * 标题内容
+     */
+    private  String  askContent;
+    /**
+     * 问题类型
+     */
+    private  Integer  askType;
+
+    /**
+     * 问题图片
+     */
+    private  String  askCountAds;
+
+    public String getAskTitle() {
+        return askTitle;
+    }
+
+    public void setAskTitle(String askTitle) {
+        this.askTitle = askTitle;
+    }
+
+    public String getAskContent() {
+        return askContent;
+    }
+
+    public void setAskContent(String askContent) {
+        this.askContent = askContent;
+    }
 
     public Long getId() {
         return id;
@@ -100,11 +134,11 @@ public class ConsultAskReply  extends BasePage {
         this.askReplyAds = askReplyAds;
     }
 
-    public Boolean getDataType() {
+    public Integer getDataType() {
         return dataType;
     }
 
-    public void setDataType(Boolean dataType) {
+    public void setDataType(Integer dataType) {
         this.dataType = dataType;
     }
 
@@ -132,11 +166,27 @@ public class ConsultAskReply  extends BasePage {
         this.tsTime = tsTime;
     }
 
-    public Boolean getYn() {
+    public Integer getYn() {
         return yn;
     }
 
-    public void setYn(Boolean yn) {
+    public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public Integer getAskType() {
+        return askType;
+    }
+
+    public void setAskType(Integer askType) {
+        this.askType = askType;
+    }
+
+    public String getAskCountAds() {
+        return askCountAds;
+    }
+
+    public void setAskCountAds(String askCountAds) {
+        this.askCountAds = askCountAds;
     }
 }

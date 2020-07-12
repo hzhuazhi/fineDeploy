@@ -26,6 +26,9 @@ public class ConsultAsk extends BasePage {
      */
     private Long did;
 
+
+
+
     /**
      * 标题
      *
@@ -189,4 +192,5 @@ public class ConsultAsk extends BasePage {
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
+
 }

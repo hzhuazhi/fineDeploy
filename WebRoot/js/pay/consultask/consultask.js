@@ -19,8 +19,9 @@ var account = {
         {"data":"askAds",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 var html = '';
-                html='<img src="'+oData.askAds+'" style="height: 200px;width: 200px">';
-
+                if(oData.askAds!=null&&oData.askAds!=""&&oData.askAds!=undefined&&oData.askAds!="undefined"){
+                    html='<img src="'+oData.askAds+'" style="height: 200px;width: 200px">';
+                }
                 $(nTd).html(html);
             }
         },
@@ -40,7 +41,7 @@ var account = {
         {"data":"id",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 var html = '';
-                html+= '<a class = "dataTableBtn dataTableDeleteBtn " href="'+ctx+'/consultask/jumpUpdate.do?id='+oData.id+'"> 查看 </a>'
+                html+= '<a class = "dataTableBtn dataTableDeleteBtn " href="'+ctx+'/consultask/queryUpdate.do?id='+oData.id+'"> 查看 </a>'
                     +' <a class = "dataTableBtn dataTableResetBtn"  directkey="' + oData.id + '" href = "javascript:void(0);">删除 </a>';
                 $(nTd).html(html);
             }

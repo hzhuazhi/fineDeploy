@@ -27,14 +27,14 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/consultaskreply")
+@RequestMapping("/askreply")
 public class ConsultAskReplyController extends BaseController {
     private static Logger log = Logger.getLogger(ConsultAskReplyController.class);
 
     @Autowired
     private ConsultAskService<ConsultAsk> consultAskService;
 
-
+    @Autowired
     private ConsultAskReplyService<ConsultAskReply> consultAskReplyService;
 
 
@@ -54,13 +54,33 @@ public class ConsultAskReplyController extends BaseController {
     public void dataList(HttpServletRequest request, HttpServletResponse response, ConsultAskReply model) throws Exception {
 //        model.setIsEnable(ManagerConstant.PUBLIC_CONSTANT.IS_ENABLE_ZC);
         List<ConsultAskReply> dataList = new ArrayList<ConsultAskReply>();
+        List<ConsultAsk> askdataList = new ArrayList<ConsultAsk>();
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
             if (account.getRoleId() != ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
                 //不是管理员，只能查询自己的数据
 //                model.setId(account.getId());
             }
-            dataList = consultAskReplyService.queryByList(model);
+            ConsultAsk  consultAsk = new ConsultAsk();
+            consultAsk.setId(model.getConsultAskId());
+            askdataList = consultAskService.queryByList(consultAsk);
+
+            ConsultAskReply  consultAskReply =new ConsultAskReply();
+            consultAskReply.setConsultAskId(model.getConsultAskId());
+            dataList = consultAskReplyService.queryByList(consultAskReply);
+
+//            ConsultAskReply  consultAskReply1 =new ConsultAskReply();
+//            consultAskReply1.setAskTitle(askdataList.get(0).getTitle());
+//            consultAskReply1.setAskContent(askdataList.get(0).getAsk());
+//            consultAskReply1.setAskType(askdataList.get(0).getReplyStatus());
+//            dataList.add(consultAskReply1);
+            for(int i=0;i<dataList.size();i++){
+                if(i==0){
+                    dataList.get(i).setAskTitle(askdataList.get(0).getAsk());
+                    dataList.get(i).setAskContent(askdataList.get(0).getAsk());
+                    dataList.get(i).setAskType(askdataList.get(0).getReplyStatus());
+                }
+            }
         }
         HtmlUtil.writerJson(response, model.getPage(), dataList);
     }
@@ -109,7 +129,12 @@ public class ConsultAskReplyController extends BaseController {
     public void add(HttpServletRequest request, HttpServletResponse response, ConsultAskReply bean) throws Exception {
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            ConsultAsk   consultAsk = new ConsultAsk();
+            consultAsk.setReplyStatus(2);
+            bean.setDataType(2);
+            consultAsk.setId(bean.getConsultAskId());
             consultAskReplyService.add(bean);
+            consultAskService.update(consultAsk);
             sendSuccessMessage(response, "保存成功~");
         }else {
             sendFailureMessage(response,"登录超时,请重新登录在操作!");

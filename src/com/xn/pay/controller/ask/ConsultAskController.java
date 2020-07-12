@@ -64,23 +64,20 @@ public class ConsultAskController extends BaseController {
 
 
     /**
-     *
-     * 获取表格数据列表-无分页
+     * 查询下面的id
+     * @param model
+     * @param id
+     * @param op
+     * @return
      */
-    @RequestMapping("/dataAllList")
-    public void dataAllList(HttpServletRequest request, HttpServletResponse response, ConsultAsk model) throws Exception {
-        List<ConsultAsk> dataList = new ArrayList<ConsultAsk>();
-        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
-        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
-            if (account.getRoleId() != ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
-                //不是管理员，只能查询自己的数据
-                model.setId(account.getId());
-            }
-            dataList = consultAskService.queryAllList(model);
-        }
-        HtmlUtil.writerJson(response, dataList);
-    }
 
+    @RequestMapping("/queryUpdate")
+    public String queryUpdate(Model model, long id, Integer op) {
+        ConsultAsk notice = new ConsultAsk();
+        notice.setId(id);
+        model.addAttribute("ask", consultAskService.queryById(notice));
+        return "pay/consultask/askReplyIndex";
+    }
     /**
      * 获取新增页面
      */
@@ -121,9 +118,7 @@ public class ConsultAskController extends BaseController {
         ConsultAsk notice = new ConsultAsk();
         notice.setId(id);
         model.addAttribute("account", consultAskService.queryById(notice));
-//        model.addAttribute("account", mobileCardService.queryById(atModel));
-//        model.addAttribute("op", op);
-        return "pay/consultask/noticeEdit";
+        return "pay/consultaskreply/dataList";
     }
 
     /**

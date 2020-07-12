@@ -69,6 +69,23 @@ var common = {
 		
 	},
 
+    savaRefreshLisg: function(data,){
+
+        if(datatable){
+            datatable.destroy();
+        }
+        datatable = $('.datatable').DataTable({
+            "ajax" : {
+                "async" : true,
+                "url" : this.url.dataList_url,
+                "type" : "post",
+                "data" : condJsonData
+            },
+            "columns":datalist
+        });
+
+    },
+
     //启用/禁用
     manyOperation: function(data){
 		var showMsg = '';

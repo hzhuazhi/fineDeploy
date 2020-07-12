@@ -163,35 +163,23 @@
   <update id="update" parameterType="Object">
     UPDATE tb_fn_consult_ask a
     <trim prefix="set" suffixOverrides=",">
-      <if test="noticeName != null" >
-        notice_name = #{noticeName,jdbcType=VARCHAR},
+      <if test="consultId != null" >
+        consult_id = #{consultId,jdbcType=BIGINT},
+      </if>
+      <if test="did != null" >
+        did = #{did,jdbcType=BIGINT},
       </if>
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="sketch != null" >
-        sketch = #{sketch,jdbcType=VARCHAR},
+      <if test="ask != null" >
+        ask = #{ask,jdbcType=VARCHAR},
       </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
+      <if test="askAds != null" >
+        ask_ads = #{askAds,jdbcType=VARCHAR},
       </if>
-      <if test="iconAds != null" >
-        icon_ads = #{iconAds,jdbcType=VARCHAR},
-      </if>
-      <if test="pageAds != null" >
-        page_ads = #{pageAds,jdbcType=VARCHAR},
-      </if>
-      <if test="startTime != null" >
-        start_time = #{startTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="endTime != null" >
-        end_time = #{endTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="seat != null" >
-        seat = #{seat,jdbcType=BIT},
-      </if>
-      <if test="noticeType != null" >
-        notice_type = #{noticeType,jdbcType=BIT},
+      <if test="replyStatus != null" >
+        reply_status = #{replyStatus,jdbcType=BIT},
       </if>
       a.update_time = NOW(),
     </trim>
