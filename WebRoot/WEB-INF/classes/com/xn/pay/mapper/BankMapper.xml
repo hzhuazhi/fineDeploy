@@ -112,7 +112,7 @@
   <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
     select
     <include refid="Base_Column_List" />
-    from tb_fn_bank a
+    from tb_fn_bank a INNER JOIN  tb_fn_mobile_card b  on a.mobile_card_id=b.id
     <include refid="Example_Where_Clause"/>
     order by a.create_time desc
   </select>

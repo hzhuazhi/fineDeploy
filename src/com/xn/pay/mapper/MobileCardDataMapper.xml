@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.pay.dao.MobileCardDataDao">
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.pay.model.MobileCardDataModel" id="dataMap">
+        <result property="id" column="id" />
+        <result property="mobileCardId" column="mobile_card_id" />
+        <result property="phoneNum" column="phone_num" />
+        <result property="smsNum" column="sms_num" />
+        <result property="smsContent" column="sms_content" />
+        <result property="dataType" column="data_type" />
+        <result property="createTime" column="create_time" />
+        <result property="cardName" column="card_name" />
+        <result property="useName" column="use_name" />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.mobile_card_id,a.phone_num,a.sms_num,a.sms_content,a.data_type,
+        a.create_time,
+        b.card_name,b.use_name
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="phoneNum != null and phoneNum != '' " >
+                and a.phone_num = #{phoneNum}
+            </if>
+            <if test="smsNum != null and smsNum != '' " >
+                and a.sms_num = #{smsNum}
+            </if>
+            <if test="dataType != 0 and dataType >0 " >
+                and a.data_type = #{dataType}
+            </if>
+            <if test="curdayStart != 0 and curdayStart >0 and curdayEnd != 0 and curdayEnd >0 " >
+                and a.curday >= #{curdayStart} and a.curday &lt;= #{curdayEnd}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_fn_mobile_card_data a left join tb_fn_mobile_card b on a.phone_num = b.phone_num
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fn_mobile_card_data a left join tb_fn_mobile_card b on a.phone_num = b.phone_num
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fn_mobile_card_data a left join tb_fn_mobile_card b on a.phone_num = b.phone_num
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+
+
+</mapper>
