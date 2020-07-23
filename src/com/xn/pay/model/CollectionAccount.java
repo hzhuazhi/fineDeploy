@@ -169,6 +169,19 @@ public class CollectionAccount extends BasePage {
      * @mbggenerated
      */
     private String  wxName;
+    /**
+     *
+     */
+    private String  userId;
+
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public Long getId() {
         return id;

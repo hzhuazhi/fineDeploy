@@ -187,9 +187,14 @@ public class CollectionAccountController<T> extends BaseController {
         if(didList.size()>0){
             collectionAccount.setDdQrCode(didList.get(0).getDdQrCode());
         }
+        List<SmallBusinesses>  list =   smallBusinessesService.queryAllList();
         model.addAttribute("account", collectionAccount);
-        model.addAttribute("small", smallBusinessesService.queryAllList());
-        return "pay/collectionaccount/collectionaccountEdit";
+        model.addAttribute("small", list);
+        if(collectionAccount.getAcType()==3){
+            return "pay/collectionaccount/collectionaccountgroupEdit";
+        }else{
+            return "pay/collectionaccount/collectionaccountEdit";
+        }
     }
 
     /**
@@ -199,7 +204,19 @@ public class CollectionAccountController<T> extends BaseController {
     public void update(HttpServletRequest request, HttpServletResponse response,CollectionAccount bean) throws Exception {
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
-            collectionAccountService.update(bean);
+
+
+            CollectionAccount  collectionAccount = new CollectionAccount();
+            collectionAccount.setAcType(3);
+            collectionAccount.setPayee(bean.getPayee());
+            List<CollectionAccount>  list = collectionAccountService.queryByList(collectionAccount);
+
+            if(list.size()==0){
+                collectionAccountService.update(bean);
+            }else{
+                sendFailureMessage(response, "该名已经存在！");
+            }
+
             if(bean.getWxId() == null || bean.getWxId() == 0){
 
             }else if(bean.getWxId()!=0){
@@ -212,8 +229,7 @@ public class CollectionAccountController<T> extends BaseController {
                 CatDataBinding  catDataBinding = new  CatDataBinding();
                 catDataBinding.setWxId(bean.getWxId());
                 catDataBinding.setRunStatus(3);
-                int  count =catDataBindingService.bindingSmail(catDataBinding);
-
+                catDataBindingService.bindingSmail(catDataBinding);
             }
             sendSuccessMessage(response, "保存成功~");
         }else {

@@ -17,7 +17,21 @@ var account = {
         {"data":"did",},
         {"data":"wxName",},
         {"data":"acName",},
-        {"data":"acType",},
+        {"data":"acType",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                var html = '';
+                if (oData.acType == 1) {
+                    html = '<span >微信</span>';
+                } else if (oData.acType == 2) {
+                    html = '<span >支付宝</span>';
+                } else if (oData.acType == 3) {
+                    html = '<span >微信群</span>';
+                }else{
+                    html = '<span >123123</span>';
+                }
+                $(nTd).html(html);
+            }
+        },
         // {"data":"acNum",},
         // {"data":"mmQrCode",},
         {"data":"ddQrCode",},
@@ -86,6 +100,7 @@ var account = {
             account.condJsonData['did'] = $("#did").val();
             account.condJsonData['checkStatus'] = $("#checkStatus").val();
             account.condJsonData['wxId'] = $("#wxId").val();
+            account.condJsonData['acType'] = $("#acType").val();
             common.showDatas(account.condJsonData,account.list);
         });
 

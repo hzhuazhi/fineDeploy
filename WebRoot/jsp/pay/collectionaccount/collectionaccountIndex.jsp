@@ -33,6 +33,17 @@
                     </select>
                 </div>
 
+                <div class = "condQueryLabelDiv">账户类型：</div>
+                <div class="formCtrlDiv">
+                    <select id="acType" name="acType" class='text-input medium-input'>
+                        <option value="" selected>===请选择===</option>
+                        <option value="1">微信</option>
+                        <option value="2">支付宝</option>
+                        <option value="3">微信群</option>
+                    </select>
+                </div>
+
+
                 <div class="searchdiv">
                     <input type = "button" id = "btnQuery" class = "buttonClass imginput" value = "搜索" />
                 </div>
