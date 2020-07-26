@@ -209,7 +209,7 @@ public class CollectionAccountController<T> extends BaseController {
             CollectionAccount  collectionAccount = new CollectionAccount();
             collectionAccount.setAcType(3);
             collectionAccount.setPayee(bean.getPayee());
-            List<CollectionAccount>  list = collectionAccountService.queryByList(collectionAccount);
+            List<CollectionAccount>  list = collectionAccountService.queryByListPayee(collectionAccount);
 
             if(list.size()==0){
                 collectionAccountService.update(bean);

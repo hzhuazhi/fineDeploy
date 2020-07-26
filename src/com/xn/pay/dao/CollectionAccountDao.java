@@ -1,6 +1,9 @@
 package com.xn.pay.dao;
 
 import com.xn.common.dao.BaseDao;
+import com.xn.pay.model.CollectionAccount;
+
+import java.util.List;
 
 /**
  * @Description TODO
@@ -11,4 +14,5 @@ import com.xn.common.dao.BaseDao;
 public interface CollectionAccountDao <T> extends BaseDao<T> {
     //小微删除更新状态
     void   wxIdUpdateCheckStatus(Long wxId);
+    List<CollectionAccount> queryByListPayee(CollectionAccount account);
 }

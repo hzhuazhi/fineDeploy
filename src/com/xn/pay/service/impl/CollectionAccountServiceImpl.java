@@ -4,11 +4,14 @@ import com.xn.common.dao.BaseDao;
 import com.xn.common.service.impl.BaseServiceImpl;
 import com.xn.pay.dao.CollectionAccountDao;
 import com.xn.pay.dao.MobileCardDao;
+import com.xn.pay.model.CollectionAccount;
 import com.xn.pay.service.CollectionAccountService;
 import com.xn.pay.service.SmallBusinessesService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Description TODO
@@ -32,5 +35,10 @@ public class CollectionAccountServiceImpl <T> extends BaseServiceImpl<T> impleme
     @Override
     public void wxIdUpdateCheckStatus(Long wxId) {
         collectionAccountDao.wxIdUpdateCheckStatus(wxId);
+    }
+
+    @Override
+    public List<CollectionAccount> queryByListPayee(CollectionAccount collectionAccount) {
+        return collectionAccountDao.queryByListPayee(collectionAccount);
     }
 }
