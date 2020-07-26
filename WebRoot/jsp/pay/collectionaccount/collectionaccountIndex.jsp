@@ -7,6 +7,9 @@
     <%@ include file="/jsp/manager/common/head-meta.jsp"%>
     <%@ include file="/jsp/manager/common/js-meta.jsp"%>
 </head>
+<style>
+    .divcss5 img{width:300px; height:400px}
+</style>
 <body>
 <div class="col_main">
     <div class = "condQueryDiv">

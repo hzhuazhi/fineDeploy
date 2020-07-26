@@ -206,15 +206,29 @@ public class CollectionAccountController<T> extends BaseController {
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
 
 
-            CollectionAccount  collectionAccount = new CollectionAccount();
-            collectionAccount.setAcType(3);
-            collectionAccount.setPayee(bean.getPayee());
-            List<CollectionAccount>  list = collectionAccountService.queryByListPayee(collectionAccount);
+//            CollectionAccount  collectionAccount = new CollectionAccount();
+//            collectionAccount.setAcType(3);
+//            collectionAccount.setPayee(bean.getPayee());
+//            List<CollectionAccount>  list = collectionAccountService.queryByListPayee(collectionAccount);
 
-            if(list.size()==0){
-                collectionAccountService.update(bean);
-            }else{
-                sendFailureMessage(response, "该名已经存在！");
+//            if(list.size()==0){
+//                collectionAccountService.update(bean);
+//            }else{
+//                sendFailureMessage(response, "该名已经存在！");
+//            }
+
+            collectionAccountService.update(bean);
+
+            if(bean.getCheckStatus()==3){
+                WxClerk wxClerk =  new WxClerk();
+                wxClerk.setWxId(bean.getWxId());
+                wxClerk.setCollectionAccountId(bean.getId());
+                wxClerkService.deleteCollectionAccountId(bean.getId());
+                wxClerkService.add(wxClerk);
+                CatDataBinding  catDataBinding = new  CatDataBinding();
+                catDataBinding.setWxId(bean.getWxId());
+                catDataBinding.setRunStatus(3);
+                catDataBindingService.bindingSmail(catDataBinding);
             }
 
             if(bean.getWxId() == null || bean.getWxId() == 0){
@@ -225,13 +239,39 @@ public class CollectionAccountController<T> extends BaseController {
                 wxClerk.setCollectionAccountId(bean.getId());
                 wxClerkService.deleteCollectionAccountId(bean.getId());
                 wxClerkService.add(wxClerk);
-
                 CatDataBinding  catDataBinding = new  CatDataBinding();
                 catDataBinding.setWxId(bean.getWxId());
                 catDataBinding.setRunStatus(3);
                 catDataBindingService.bindingSmail(catDataBinding);
             }
             sendSuccessMessage(response, "保存成功~");
+        }else {
+            sendFailureMessage(response, "登录超时,请重新登录在操作!");
+        }
+    }
+
+
+
+
+
+    /**
+     * 修改数据
+     */
+    @RequestMapping("/updatePayee")
+    public void updatePayee(HttpServletRequest request, HttpServletResponse response,CollectionAccount bean) throws Exception {
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+
+            CollectionAccount  collectionAccount = new CollectionAccount();
+            collectionAccount.setAcType(3);
+            collectionAccount.setPayee(bean.getPayee());
+            List<CollectionAccount>  list = collectionAccountService.queryByListPayee(collectionAccount);
+            if(list.size()==0){
+                collectionAccountService.update(bean);
+                sendSuccessMessage(response, "保存成功~");
+            }else{
+                sendFailureMessage(response, "该名已经存在！");
+            }
         }else {
             sendFailureMessage(response, "登录超时,请重新登录在操作!");
         }

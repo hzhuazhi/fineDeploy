@@ -34,8 +34,21 @@ var account = {
         },
         // {"data":"acNum",},
         // {"data":"mmQrCode",},
-        {"data":"ddQrCode",},
-        {"data":"payee",},
+        {"data":"mmQrCode",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                // var html = '<div style="width: 50px;height: 50px">';
+                var html = '<div class="divcss5">';
+                             html+='<img src="'+oData.mmQrCode+'" class="divcss5" >';
+                    html+='</div>';
+                $(nTd).html(html);
+            }
+        },
+        {"data":"payee",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                var html = '';
+                    html='<input type="text" class="formInput" id="payee'+iRow+'" name="payee'+iRow+'"  value="'+oData.payee+'" />';
+                $(nTd).html(html);
+        }},
         {"data":"businessType",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 var html = '';
@@ -71,6 +84,7 @@ var account = {
                 var html = '';
 
                 html+= '<a class = "dataTableBtn dataTableDeleteBtn " href="'+ctx+'/collectionaccount/jumpUpdate.do?id='+oData.id+'"> 编辑 </a>'
+                    +' <a class = "dataTableBtn dataTableDeleteBtn"  onclick="updatePayee('+oData.id+',\'payee\'+'+iRow+')">修改 </a>'
                     +' <a class = "dataTableBtn dataTableResetBtn"  directkey="' + oData.id + '" href = "javascript:void(0);">删除 </a>';
                 $(nTd).html(html);
             }
@@ -152,6 +166,25 @@ var account = {
             $("#divWxid").html(shtml);
         });
     }
+
+}
+
+
+
+function  updatePayee(id,payeeId){
+    // alert(id)
+    // alert(payeeId)
+    // alert($("#"+payeeId).val())
+    var url = ctx + "/collectionaccount/updatePayee.do";
+    var data = {
+        id:id,
+        payee:$("#"+payeeId).val()
+    };
+    common.ajax(url,data,function(data){
+        alert(data.msg);
+        // var dataList=data;
+
+    });
 
 }
 

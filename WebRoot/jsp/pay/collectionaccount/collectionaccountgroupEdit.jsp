@@ -65,7 +65,7 @@
                         </div>
 
                         <div class="formCtrlDiv">
-                            <input type="text" class="formInput" id="payee" name="payee"	maxlength="240" value="${dl.payee}"  />
+                            <input type="text" class="formInput" id="payee" name="payee" disabled	maxlength="240" value="${dl.payee}"  />
                         </div>
                     </li>
 
@@ -77,7 +77,7 @@
 
                         <div class="formCtrlDiv">
                             <div id="qrData">
-                                <img name="ddQrCode" id="ddQrCode" src="${dl.ddQrCode}" style="width: 300px;width: 300px">
+                                <img name="mmQrCode" id="ddQrCode"  style="width: 300px;width: 300px">
                             </div>
                         </div>
                     </li>
