@@ -43,7 +43,7 @@
                         </div>
 
                         <div class="formCtrlDiv">
-                            <select id="wxId" name="wxId" class='text-input medium-input' disabled>
+                            <select id="wxId" name="wxId" class='text-input medium-input'>
                                 <option value="">===请选择===</option>
                                 <c:forEach items="${small}" var="dataList">
                                     <c:choose>
