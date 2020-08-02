@@ -18,6 +18,9 @@ var account = {
         {"data":"wxPassWd",},
         {"data":"wxName",},
         {"data":"toWxid",},
+        {"data":"dataNum",},
+        {"data":"dayNum",},
+        {"data":"wxQrCode",},
         {"data":"totalLink",},
         {"data":"useStatus",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {

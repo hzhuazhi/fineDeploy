@@ -69,6 +69,32 @@
                             <input type="text" class="formInput" id="toWxid" name="toWxid" value="${dl.toWxid}"	maxlength="240" />
                         </div>
                     </li>
+
+                    <li style="border-top: none;">
+                        <div class="formTextDiv">
+                            <span class="require"><font color="red">*</font>加用户总上限</span>
+                        </div>
+                        <div class="formCtrlDiv">
+                            <input type="text" class="formInput" id="dataNum" name="dataNum" value="${dl.dataNum}"	maxlength="240" />
+                        </div>
+                    </li>
+                    <li style="border-top: none;">
+                        <div class="formTextDiv">
+                            <span class="require"><font color="red">*</font>加用户日上限</span>
+                        </div>
+                        <div class="formCtrlDiv">
+                            <input type="text" class="formInput" id="dayNum" name="dayNum"	value="${dl.dayNum}" maxlength="240" />
+                        </div>
+                    </li>
+                    <li style="border-top: none;">
+                        <div class="formTextDiv">
+                            <span class="require"><font color="red">*</font>微信名片二维码地址</span>
+                        </div>
+                        <div class="formCtrlDiv">
+                            <input type="text" class="formInput" id="wxQrCode" name="wxQrCode"	value="${dl.wxQrCode}" maxlength="240" />
+                        </div>
+                    </li>
+
                     <li style="border-top: none;">
                         <div class="formTextDiv">
                             <span class="require"><font color="red">*</font>旗下绑定多少个店员</span>

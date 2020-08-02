@@ -92,7 +92,7 @@ var account = {
     ],
     // 查询条件，aoData是必要的。其他的就是对应的实体类字段名，因为条件查询是把数据封装在实体类中的。
     condJsonData : {
-        accountNum:null
+        acType:3
     },
     //页面加载
     indexInit : function (){

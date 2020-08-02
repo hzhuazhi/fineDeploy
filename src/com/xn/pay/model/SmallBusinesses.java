@@ -60,6 +60,24 @@ public class SmallBusinesses extends BasePage {
      * @mbggenerated
      */
     private Integer useStatus;
+    /**
+     * 总共可以加多少个用户
+     *
+     * @mbggenerated
+     */
+    private Integer dataNum;
+    /**
+     * 每日可加用户的数量
+     *
+     * @mbggenerated
+     */
+    private Integer dayNum;
+    /**
+     * 微信名片二维码地址
+     *
+     * @mbggenerated
+     */
+    private String wxQrCode;
 
     /**
      * 创建时间
@@ -184,5 +202,29 @@ public class SmallBusinesses extends BasePage {
 
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public Integer getDataNum() {
+        return dataNum;
+    }
+
+    public void setDataNum(Integer dataNum) {
+        this.dataNum = dataNum;
+    }
+
+    public Integer getDayNum() {
+        return dayNum;
+    }
+
+    public void setDayNum(Integer dayNum) {
+        this.dayNum = dayNum;
+    }
+
+    public String getWxQrCode() {
+        return wxQrCode;
+    }
+
+    public void setWxQrCode(String wxQrCode) {
+        this.wxQrCode = wxQrCode;
     }
 }
