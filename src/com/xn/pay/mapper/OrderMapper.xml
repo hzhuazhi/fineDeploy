@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xn.pay.dao.OrderDao" >
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.pay.model.OrderModel" id="dataMap">
+        <id column="id" property="id" />
+        <result column="did" property="did"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="order_money" property="orderMoney"  />
+        <result column="collection_account_id" property="collectionAccountId"  />
+        <result column="collection_type" property="collectionType"  />
+        <result column="qr_code_id" property="qrCodeId"  />
+        <result column="qr_code" property="qrCode" />
+        <result column="wx_nickname" property="wxNickname"  />
+        <result column="wx_id" property="wxId"  />
+        <result column="out_trade_no" property="outTradeNo"  />
+        <result column="notify_url" property="notifyUrl"  />
+        <result column="order_status" property="orderStatus"  />
+        <result column="invalid_time" property="invalidTime"  />
+        <result column="user_id" property="userId"  />
+        <result column="zfb_ac_num" property="zfbAcNum"  />
+        <result column="program_time" property="programTime"  />
+
+        <result column="did_status" property="didStatus"  />
+        <result column="did_time" property="didTime"  />
+        <result column="profit" property="profit"  />
+        <result column="is_red_pack" property="isRedPack"  />
+        <result column="red_pack_time" property="redPackTime"  />
+        <result column="is_reply" property="isReply"  />
+
+        <result column="reply_data" property="replyData"  />
+        <result column="reply_time" property="replyTime" />
+        <result column="actual_money" property="actualMoney"  />
+        <result column="money_fit_type" property="moneyFitType"  />
+        <result column="replenish_type" property="replenishType"  />
+        <result column="remark" property="remark"  />
+        <result column="curday" property="curday"  />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime"  />
+        <result column="ts_time" property="tsTime"  />
+        <result column="yn" property="yn" />
+        <result column="nickname" property="nickname"  />
+        <result column="ac_num" property="acNum"  />
+        <result column="total_order_money" property="totalOrderMoney"  />
+        <result column="total_profit" property="totalProfit"  />
+        <result column="total_actual_money" property="totalActualMoney"  />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.did,a.order_no,a.order_money,a.collection_account_id,a.collection_type,a.qr_code_id,a.qr_code,
+        a.wx_nickname,a.wx_id,a.out_trade_no,a.notify_url,a.order_status,a.invalid_time,a.user_id,a.zfb_ac_num,
+        a.program_time,a.did_status,a.did_time,a.profit,a.is_red_pack,a.red_pack_time,a.is_reply,a.reply_data,
+        a.reply_time,a.actual_money,a.money_fit_type,a.replenish_type,a.remark,a.curday,
+        a.create_time,a.update_time,a.ts_time,a.yn,
+        b.nickname,b.ac_num
+
+    </sql>
+
+
+
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="did != 0 and did >0 " >
+                and a.did = #{did}
+            </if>
+            <if test="orderNo != null and orderNo != '' " >
+                and a.order_no = #{orderNo}
+            </if>
+            <if test="wxNickname != null and wxNickname != '' " >
+                and a.wx_nickname = #{wxNickname}
+            </if>
+            <if test="orderStatus != 0 and orderStatus >0 " >
+                and a.order_status = #{orderStatus}
+            </if>
+            <if test="isRedPack != 0 and isRedPack >0 " >
+                and a.is_red_pack = #{isRedPack}
+            </if>
+            <if test="isReply != 0 and isReply >0 " >
+                and a.is_reply = #{isReply}
+            </if>
+            <if  test="moneyFitType != 0 and moneyFitType >0 " >
+                and a.money_fit_type = #{moneyFitType}
+            </if>
+            <if  test="replenishType != 0 and replenishType >0 " >
+                and a.replenish_type = #{replenishType}
+            </if>
+            <if test="curday != 0 and curday >0 " >
+                and a.curday = #{curday}
+            </if>
+            <if test="curdayStart != 0 and curdayStart >0 and curdayEnd != 0 and curdayEnd >0 " >
+                and a.curday >= #{curdayStart} and a.curday &lt;= #{curdayEnd}
+            </if>
+            <if test="nickname != null and nickname != '' " >
+                and b.nickname = #{nickname}
+            </if>
+            <if test="acNum != null and acNum != '' " >
+                and b.ac_num = #{acNum}
+            </if>
+
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_fn_order a left join tb_fn_did b on a.did=b.id
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fn_order a left join tb_fn_did b on a.did=b.id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fn_order a left join tb_fn_did b on a.did=b.id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fn_order a left join tb_fn_did b on a.did=b.id
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_fn_order a left join tb_fn_did b on a.did=b.id
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+    <!-- 获取订单的total信息 -->
+    <select id="getTotalData"  resultMap="dataMap" parameterType="Object">
+        select
+        ifnull(sum(convert(a.order_money,decimal(19,2))), '0.00') as total_order_money,
+        ifnull(sum(convert(a.profit,decimal(19,2))),'0.00') as total_profit,
+        ifnull(sum(convert(a.actual_money,decimal(19,2))),'0.00') as total_actual_money
+        from tb_fn_order a left join tb_fn_did b on a.did=b.id
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+</mapper>

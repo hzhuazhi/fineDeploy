@@ -27,12 +27,13 @@
     <result column="yn" property="yn" jdbcType="BIT" />
     <result column="wx_id" property="wxId"  />
     <result column="wx_name" property="wxName" />
+    <result column="user_id" property="userId" />
   </resultMap>
   <!-- 定义数据库基本列,只适用代替单表的*-->
   <sql id="Base_Column_List">
        a.id, a.did, a.ac_name, a.ac_type, a.ac_num, a.mm_qr_code, a.dd_qr_code, a.payee, a.bank_name, a.business_type,
     a.wx_qr_code_ads, a.day_switch, a.month_switch, a.total_switch, a.check_status, a.check_info,a.remark,
-    a.use_status, a.create_time, a.update_time, a.ts_time, a.yn, a.wx_id,b.wx_name
+    a.use_status, a.create_time, a.update_time, a.ts_time, a.yn, a.wx_id,a.user_id,b.wx_name
     </sql>
 
 
@@ -40,7 +41,7 @@
   <sql id="Base_Column_List_query">
        a.id, a.did, a.ac_name, a.ac_type, a.ac_num, a.mm_qr_code, a.dd_qr_code, a.payee, a.bank_name, a.business_type,
     a.wx_qr_code_ads, a.day_switch, a.month_switch, a.total_switch, a.check_status, a.check_info,a.remark,
-    a.use_status, a.create_time, a.update_time, a.ts_time, a.yn , a.wx_id
+    a.use_status, a.create_time, a.update_time, a.ts_time, a.yn , a.wx_id,a.user_id
     </sql>
 
   <!-- 查询条件 -->
@@ -55,6 +56,9 @@
       </if>
       <if test="checkStatus != null and checkStatus != '' " >
         and a.check_status = #{checkStatus}
+      </if>
+      <if test="acType != null and acType != '' " >
+        and a.ac_type = #{acType}
       </if>
       and a.yn = 0
     </trim>
@@ -108,12 +112,32 @@
       <if test="wxId != null and wxId != '' " >
         and b.id = #{wxId}
       </if>
+      <if test="payee != null and payee != '' " >
+        and a.payee = #{payee}
+      </if>
+      <if test="acType != 0 and acType >0  " >
+        and a.ac_type = #{acType}
+      </if>
       and a.yn = 0
     </trim>
 
     <!--<include refid="Example_Where_Clause"/>-->
     order by a.create_time desc
     limit #{startIndex},#{pageSize}
+  </select>
+
+
+
+
+
+  <select id="queryByListPayee" resultMap="dataMap"  parameterType="Object">
+    select  a.id, a.did, a.ac_name, a.ac_type, a.ac_num, a.mm_qr_code, a.dd_qr_code, a.payee, a.bank_name, a.business_type,
+    a.wx_qr_code_ads, a.day_switch, a.month_switch, a.total_switch, a.check_status, a.check_info,a.remark,
+    a.use_status, a.create_time, a.update_time, a.ts_time, a.yn
+    from  tb_fn_did_collection_account a
+    where  1=1
+    and a.payee = #{payee}
+    order by a.create_time desc
   </select>
 
   <!-- 查询列表-无分页-有条件/有条件 -->
