@@ -214,6 +214,18 @@ var account = {
             shtml += "<font color='red'>" + data.totalProfit + "</font>";
             shtml += "      实际上报金额：";
             shtml += "<font color='red'>" + data.totalActualMoney + "</font>";
+            shtml += "      总订单数：";
+            shtml += "<font color='red'>" + data.totalOrderNum + "</font>";
+            shtml += "      总成功订单数：";
+            shtml += "<font color='red'>" + data.totalSuccessOrderNum + "</font>";
+            shtml += "      总质疑订单数：";
+            shtml += "<font color='red'>" + data.totalQuestionOrderNum + "</font>";
+            shtml += "      总成功金额：";
+            shtml += "<font color='red'>" + data.totalSuccessMoney + "</font>";
+            shtml += "      总质疑金额：";
+            shtml += "<font color='red'>" + data.totalQuestionMoney + "</font>";
+            shtml += "      总进群次数：";
+            shtml += "<font color='red'>" + data.totalComeInGroupNum + "</font>";
             $("#totalDiv").html(shtml);
         });
     }

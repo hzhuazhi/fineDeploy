@@ -30,4 +30,19 @@ public class OrderServiceImpl<T> extends BaseServiceImpl<T> implements OrderServ
     public OrderModel getTotalData(OrderModel model) {
         return orderDao.getTotalData(model);
     }
+
+    @Override
+    public int countOrder(OrderModel model) {
+        return orderDao.countOrder(model);
+    }
+
+    @Override
+    public String sumOrderMoney(OrderModel model) {
+        return orderDao.sumOrderMoney(model);
+    }
+
+    @Override
+    public int countComeInGroup(OrderModel model) {
+        return orderDao.countComeInGroup(model);
+    }
 }

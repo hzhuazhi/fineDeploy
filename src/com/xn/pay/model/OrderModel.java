@@ -247,9 +247,19 @@ public class OrderModel extends BasePage {
      */
     private String replenishTypeStr;
 
-    private String totalOrderMoney;
-    private String totalProfit;
-    private String totalActualMoney;
+    private String totalOrderMoney;// 总订单金额
+    private String totalProfit;// 总收益
+    private String totalActualMoney;// 总实际金额
+
+    private int totalOrderNum;// 总订单数
+    private int totalSuccessOrderNum;// 总成功订单数
+    private int totalQuestionOrderNum;// 总质疑订单数
+    private String totalSuccessMoney;// 总成功金额
+    private String totalQuestionMoney;// 总质疑金额
+    private int totalComeInGroupNum;// 总进群次数
+
+
+    private int dataType;
 
 
     public long getId() {
@@ -666,5 +676,61 @@ public class OrderModel extends BasePage {
 
     public void setTsTime(String tsTime) {
         this.tsTime = tsTime;
+    }
+
+    public int getTotalOrderNum() {
+        return totalOrderNum;
+    }
+
+    public void setTotalOrderNum(int totalOrderNum) {
+        this.totalOrderNum = totalOrderNum;
+    }
+
+    public int getTotalSuccessOrderNum() {
+        return totalSuccessOrderNum;
+    }
+
+    public void setTotalSuccessOrderNum(int totalSuccessOrderNum) {
+        this.totalSuccessOrderNum = totalSuccessOrderNum;
+    }
+
+    public int getTotalQuestionOrderNum() {
+        return totalQuestionOrderNum;
+    }
+
+    public void setTotalQuestionOrderNum(int totalQuestionOrderNum) {
+        this.totalQuestionOrderNum = totalQuestionOrderNum;
+    }
+
+    public String getTotalSuccessMoney() {
+        return totalSuccessMoney;
+    }
+
+    public void setTotalSuccessMoney(String totalSuccessMoney) {
+        this.totalSuccessMoney = totalSuccessMoney;
+    }
+
+    public String getTotalQuestionMoney() {
+        return totalQuestionMoney;
+    }
+
+    public void setTotalQuestionMoney(String totalQuestionMoney) {
+        this.totalQuestionMoney = totalQuestionMoney;
+    }
+
+    public int getTotalComeInGroupNum() {
+        return totalComeInGroupNum;
+    }
+
+    public void setTotalComeInGroupNum(int totalComeInGroupNum) {
+        this.totalComeInGroupNum = totalComeInGroupNum;
+    }
+
+    public int getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(int dataType) {
+        this.dataType = dataType;
     }
 }

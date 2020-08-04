@@ -87,6 +87,89 @@ public class OrderController extends BaseController {
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
             if (account.getRoleId() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
                 data = orderService.getTotalData(model);
+
+                // 查询总订单数量
+                OrderModel totalOrderNumQuery = new OrderModel();
+                if (model.getCurdayStart() ==0 || model.getCurdayEnd() == 0){
+                    totalOrderNumQuery.setCurdayStart(DateUtil.getDayNumber(new Date()));
+                    totalOrderNumQuery.setCurdayEnd(DateUtil.getDayNumber(new Date()));
+                }else{
+                    totalOrderNumQuery.setCurdayStart(model.getCurdayStart());
+                    totalOrderNumQuery.setCurdayEnd(model.getCurdayEnd());
+                }
+                int totalOrderNum = orderService.countOrder(totalOrderNumQuery);
+                data.setTotalOrderNum(totalOrderNum);
+
+                // 查询总支付订单数量
+                OrderModel totalSuccessOrderNumQuery = new OrderModel();
+                if (model.getCurdayStart() ==0 || model.getCurdayEnd() == 0){
+                    totalSuccessOrderNumQuery.setCurdayStart(DateUtil.getDayNumber(new Date()));
+                    totalSuccessOrderNumQuery.setCurdayEnd(DateUtil.getDayNumber(new Date()));
+                    log.info("");
+                }else{
+                    totalSuccessOrderNumQuery.setCurdayStart(model.getCurdayStart());
+                    totalSuccessOrderNumQuery.setCurdayEnd(model.getCurdayEnd());
+                }
+                totalSuccessOrderNumQuery.setOrderStatus(4);
+                int totalSuccessOrderNum = orderService.countOrder(totalSuccessOrderNumQuery);
+                data.setTotalSuccessOrderNum(totalSuccessOrderNum);
+
+                // 查询总质疑订单数
+                OrderModel totalQuestionOrderNumQuery = new OrderModel();
+                if (model.getCurdayStart() ==0 || model.getCurdayEnd() == 0){
+                    log.info("");
+                    totalQuestionOrderNumQuery.setCurdayStart(DateUtil.getDayNumber(new Date()));
+                    totalQuestionOrderNumQuery.setCurdayEnd(DateUtil.getDayNumber(new Date()));
+                }else{
+                    totalQuestionOrderNumQuery.setCurdayStart(model.getCurdayStart());
+                    totalQuestionOrderNumQuery.setCurdayEnd(model.getCurdayEnd());
+                }
+                totalQuestionOrderNumQuery.setOrderStatus(3);
+                int totalQuestionOrderNum = orderService.countOrder(totalQuestionOrderNumQuery);
+                data.setTotalQuestionOrderNum(totalQuestionOrderNum);
+
+                // 查询总成功金额
+                OrderModel totalSuccessMoneyQuery = new OrderModel();
+                if (model.getCurdayStart() ==0 || model.getCurdayEnd() == 0){
+                    totalSuccessMoneyQuery.setCurdayStart(DateUtil.getDayNumber(new Date()));
+                    totalSuccessMoneyQuery.setCurdayEnd(DateUtil.getDayNumber(new Date()));
+                }else{
+                    totalSuccessMoneyQuery.setCurdayStart(model.getCurdayStart());
+                    totalSuccessMoneyQuery.setCurdayEnd(model.getCurdayEnd());
+                    log.info("");
+                }
+                totalSuccessMoneyQuery.setOrderStatus(4);
+                String totalSuccessMoney = orderService.sumOrderMoney(totalSuccessMoneyQuery);
+                data.setTotalSuccessMoney(totalSuccessMoney);
+
+                // 查询总质疑金额
+                OrderModel totalQuestionMoneyQuery = new OrderModel();
+                if (model.getCurdayStart() ==0 || model.getCurdayEnd() == 0){
+                    totalQuestionMoneyQuery.setCurdayStart(DateUtil.getDayNumber(new Date()));
+                    totalQuestionMoneyQuery.setCurdayEnd(DateUtil.getDayNumber(new Date()));
+                }else{
+                    log.info("");
+                    totalQuestionMoneyQuery.setCurdayStart(model.getCurdayStart());
+                    totalQuestionMoneyQuery.setCurdayEnd(model.getCurdayEnd());
+                }
+                totalQuestionMoneyQuery.setOrderStatus(3);
+                String totalQuestionMoney = orderService.sumOrderMoney(totalQuestionMoneyQuery);
+                data.setTotalQuestionMoney(totalQuestionMoney);
+
+                // 查询总进群次数
+                OrderModel totalComeInGroupNumQuery = new OrderModel();
+                if (model.getCurdayStart() ==0 || model.getCurdayEnd() == 0){
+                    totalComeInGroupNumQuery.setCurdayStart(DateUtil.getDayNumber(new Date()));
+                    totalComeInGroupNumQuery.setCurdayEnd(DateUtil.getDayNumber(new Date()));
+                }else{
+                    totalComeInGroupNumQuery.setCurdayStart(model.getCurdayStart());
+                    log.info("");
+                    totalComeInGroupNumQuery.setCurdayEnd(model.getCurdayEnd());
+                }
+                totalComeInGroupNumQuery.setDataType(4);
+                int totalComeInGroupNum = orderService.countComeInGroup(totalComeInGroupNumQuery);
+                data.setTotalComeInGroupNum(totalComeInGroupNum);
+
             }
         }
         HtmlUtil.writerJson(response, data);

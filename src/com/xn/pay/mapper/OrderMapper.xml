@@ -104,6 +104,24 @@
         </trim>
     </sql>
 
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause_Analysis">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="dataType != 0 and dataType >0 " >
+                and a.data_type = #{dataType}
+            </if>
+            <if test="curday != 0 and curday >0 " >
+                and a.curday = #{curday}
+            </if>
+            <if test="curdayStart != 0 and curdayStart >0 and curdayEnd != 0 and curdayEnd >0 " >
+                and a.curday >= #{curdayStart} and a.curday &lt;= #{curdayEnd}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
     <!-- 查询条件_id -->
     <sql id="Example_Where_Clause_id">
         where 1=1
@@ -166,6 +184,28 @@
         ifnull(sum(convert(a.actual_money,decimal(19,2))),'0.00') as total_actual_money
         from tb_fn_order a left join tb_fn_did b on a.did=b.id
         <include refid="Example_Where_Clause"/>
+    </select>
+
+
+    <!-- 查询订单数量-->
+    <select id="countOrder" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_fn_order a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 计算成功订单金额-->
+    <select id="sumOrderMoney" resultType="java.lang.String"  parameterType="Object">
+        select ifnull(sum(convert(a.order_money,decimal(19,2))), '0.00') as order_money
+        from tb_fn_order a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询用户进群的数量-->
+    <select id="countComeInGroup" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_fn_cat_data_analysis a
+        <include refid="Example_Where_Clause_Analysis"/>
     </select>
 
 </mapper>
