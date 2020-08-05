@@ -72,6 +72,9 @@
             <if test="wxNickname != null and wxNickname != '' " >
                 and a.wx_nickname = #{wxNickname}
             </if>
+            <if test="outTradeNo != null and outTradeNo != '' " >
+                and a.out_trade_no = #{outTradeNo}
+            </if>
             <if test="orderStatus != 0 and orderStatus >0 " >
                 and a.order_status = #{orderStatus}
             </if>

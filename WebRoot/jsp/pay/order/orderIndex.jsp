@@ -20,6 +20,11 @@
                     <input type ="text" class ="inputCommonSty" id="orderNo" name ="orderNo">
                 </div>
 
+                <div class = "condQueryLabelDiv">商家订单：</div>
+                <div class="formCtrlDiv">
+                    <input type ="text" class ="inputCommonSty" id="outTradeNo" name ="outTradeNo">
+                </div>
+
                 <div class = "condQueryLabelDiv">用户昵称：</div>
                 <div class="formCtrlDiv">
                     <input type ="text" class ="inputCommonSty" id="nickname" name ="nickname">
@@ -29,7 +34,7 @@
                 <div class="formCtrlDiv">
                     <input type ="text" class ="inputCommonSty" id="wxNickname" name ="wxNickname">
                 </div>
-
+            </br>
                 <div class = "condQueryLabelDiv">订单状态：</div>
                 <div class="formCtrlDiv" id = "moduleTypeDiv">
                     <select id="orderStatus" name="orderStatus" class='text-input medium-input'>
@@ -112,6 +117,7 @@
         <%--汇总：${total.totalMoney}---${total.totalServiceCharge}---${total.totalActualMoney}--%>
         <tr>
             <th width="150">订单号</th>
+            <th width="150">商家订单</th>
             <th width="100">订单金额</th>
             <th width="100">用户昵称</th>
             <th width="100">支付类型</th>

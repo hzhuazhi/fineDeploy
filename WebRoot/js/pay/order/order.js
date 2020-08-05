@@ -16,6 +16,7 @@ var account = {
     //列表显示参数
     list:[
         {"data":"orderNo",},
+        {"data":"outTradeNo",},
         {"data":"orderMoney",},
         {"data":"nickname",},
         {"data":"collectionType",
@@ -112,6 +113,7 @@ var account = {
     // 查询条件，aoData是必要的。其他的就是对应的实体类字段名，因为条件查询是把数据封装在实体类中的。
     condJsonData : {
         orderNo:null,
+        outTradeNo:null,
         nickname:null,
         wxNickname:null,
         orderStatus:0,
@@ -133,6 +135,7 @@ var account = {
         // 条件查询按钮事件
         $('#btnQuery').click(function() {
             account.condJsonData['orderNo'] = $("#orderNo").val();
+            account.condJsonData['outTradeNo'] = $("#outTradeNo").val();
             account.condJsonData['nickname'] = $("#nickname").val();
             account.condJsonData['wxNickname'] = $("#wxNickname").val();
             account.condJsonData['orderStatus'] = $("#orderStatus").val();
@@ -150,6 +153,8 @@ var account = {
         $("#butReset").click(function(){
             account.condJsonData['orderNo'] = "";
             $("#orderNo").val("");
+            account.condJsonData['outTradeNo'] = "";
+            $("#outTradeNo").val("");
             account.condJsonData['nickname'] = "";
             $("#nickname").val("");
             account.condJsonData['wxNickname'] = "";
@@ -184,6 +189,7 @@ var account = {
     queryTotal:function(){
         var url = basePath + "order/totalData.do";
         var orderNo = $("#orderNo").val();
+        var outTradeNo = $("#outTradeNo").val();
         var nickname = $("#nickname").val();
         var wxNickname = $("#wxNickname").val();
         var orderStatus = $("#orderStatus").val();
@@ -195,6 +201,7 @@ var account = {
         var curdayEnd = $("#curdayEnd").val();
         var data = {
             "orderNo":orderNo,
+            "outTradeNo":outTradeNo,
             "nickname":nickname,
             "wxNickname":wxNickname,
             "orderStatus":orderStatus,
