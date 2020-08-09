@@ -61,6 +61,10 @@
             <th nowrap>可爱猫id</th>
             <th nowrap>加用户总上限</th>
             <th nowrap>加用户日上限</th>
+            <th nowrap>允许被加总群数</th>
+            <th nowrap>已加群数</th>
+            <th nowrap>加群是否到上限</th>
+            <th nowrap>每天允许加群数</th>
             <th nowrap>微信名片二维码地址</th>
             <th nowrap>绑定店员数</th>
             <th nowrap>使用状态</th>

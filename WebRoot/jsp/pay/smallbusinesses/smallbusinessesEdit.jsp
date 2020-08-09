@@ -86,6 +86,54 @@
                             <input type="text" class="formInput" id="dayNum" name="dayNum"	value="${dl.dayNum}" maxlength="240" />
                         </div>
                     </li>
+
+                    <li style="border-top: none;">
+                        <div class="formTextDiv">
+                            <span class="require"><font color="red">*</font>允许被加总群数</span>
+                        </div>
+                        <div class="formCtrlDiv">
+                            <input type="text" class="formInput" id="groupNum" name="groupNum"	value="${dl.groupNum}" maxlength="240" />
+                        </div>
+                    </li>
+
+
+                    <li style="border-top: none;">
+                        <div class="formTextDiv">
+                            <span class="require"><font color="red">*</font>已加群数</span>
+                        </div>
+                        <div class="formCtrlDiv">
+                            <input type="text" class="formInput" id="isGroupNum" name="isGroupNum"	value="${dl.isGroupNum}" maxlength="240" />
+                        </div>
+                    </li>
+
+                    <li style="border-top: none;">
+                        <div class="formTextDiv">
+                            <span class="require"><font color="red">*</font>加群是否到上限</span>
+                        </div>
+                        <div class="formCtrlDiv">
+                            <select id="isOkGroup" name="isOkGroup" class='text-input medium-input'>
+                                <c:if test="${dl.isOkGroup == 1}">
+                                    <option value="1" selected>未完成</option>
+                                    <option value="2">完成</option>
+                                </c:if>
+                                <c:if test="${dl.isOkGroup == 2}">
+                                    <option value="1" >未完成</option>
+                                    <option value="2"selected>完成</option>
+                                </c:if>
+                            </select>
+
+                        </div>
+                    </li>
+
+                    <li style="border-top: none;">
+                        <div class="formTextDiv">
+                            <span class="require"><font color="red">*</font>每天允许加群数</span>
+                        </div>
+                        <div class="formCtrlDiv">
+                            <input type="text" class="formInput" id="dayGroupNum" name="dayGroupNum"	value="${dl.dayGroupNum}" maxlength="240" />
+                        </div>
+                    </li>
+
                     <li style="border-top: none;">
                         <div class="formTextDiv">
                             <span class="require"><font color="red">*</font>微信名片二维码地址</span>

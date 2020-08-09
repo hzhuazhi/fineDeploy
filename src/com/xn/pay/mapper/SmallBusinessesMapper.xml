@@ -17,12 +17,17 @@
     <result column="create_time" property="createTime"  />
     <result column="update_time" property="updateTime"  />
     <result column="ts_time" property="tsTime"  />
+    <result column="group_num" property="groupNum"  />
+    <result column="is_group_num" property="isGroupNum"  />
+    <result column="is_ok_group" property="isOkGroup"  />
+    <result column="day_group_num" property="dayGroupNum"  />
     <result column="yn" property="yn"  />
   </resultMap>
   <!-- 定义数据库基本列,只适用代替单表的*-->
   <sql id="Base_Column_List">
         a.id, a.ac_name, a.wx_pass_wd, a.wx_name, a.to_wxid, a.total_link, a.binding_mobile, a.use_status,
-    a.create_time, a.update_time, a.ts_time, a.yn, a.data_num, a.day_num, a.wx_qr_code
+    a.create_time, a.update_time, a.ts_time, a.yn, a.data_num, a.day_num, a.wx_qr_code, a.group_num
+    , a.is_group_num, a.is_ok_group, a.day_group_num
     </sql>
 
 
@@ -145,6 +150,18 @@
       <if test="wxQrCode != null" >
         wx_qr_code,
       </if>
+      <if test="groupNum != null" >
+          group_num,
+       </if>
+       <if test="isGroupNum != null" >
+           is_group_num,
+       </if>
+       <if test="isOkGroup != null" >
+           is_ok_group,
+       </if>
+       <if test="dayGroupNum != null" >
+           day_group_num,
+        </if>
       create_time,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -181,6 +198,18 @@
       <if test="wxQrCode != null" >
         #{wxQrCode,jdbcType=BIT},
       </if>
+        <if test="groupNum != null" >
+            #{groupNum,jdbcType=BIT},
+        </if>
+        <if test="isGroupNum != null" >
+            #{isGroupNum,jdbcType=BIT},
+        </if>
+        <if test="isOkGroup != null" >
+            #{isOkGroup,jdbcType=BIT},
+        </if>
+        <if test="dayGroupNum != null" >
+            #{dayGroupNum,jdbcType=BIT},
+        </if>
       NOW(),
     </trim>
   </insert>
@@ -223,6 +252,18 @@
       <if test="wxQrCode != null" >
         wx_qr_code = #{wxQrCode,jdbcType=TIMESTAMP},
       </if>
+      <if test="groupNum != null" >
+          group_num = #{groupNum,jdbcType=TIMESTAMP},
+      </if>
+      <if test="wxQrCode != null" >
+          is_group_num = #{isGroupNum,jdbcType=TIMESTAMP},
+      </if>
+        <if test="isOkGroup != null" >
+            is_ok_group = #{isOkGroup,jdbcType=TIMESTAMP},
+        </if>
+        <if test="dayGroupNum != null" >
+            day_group_num = #{dayGroupNum,jdbcType=TIMESTAMP},
+        </if>
       a.update_time = NOW(),
     </trim>
     <include refid="Example_Where_Clause_id"/>
