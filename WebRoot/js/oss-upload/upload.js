@@ -1,7 +1,7 @@
 
-accessid= 'LTAIEMzvMhhaBuHE';
-accesskey= 'W2LdnHbyoqDZQDD3v2rlNMREiy2cEM';
-host = 'https://zqtemp.oss-cn-hangzhou.aliyuncs.com';
+accessid= 'LTAI4GBhpufFHev3nK9gCDdp';
+accesskey= 'zKgpyn1WFeCzCnYpW4sHkxE45WCDyo';
+host = 'https://xixi-xixi.oss-cn-hangzhou.aliyuncs.com';
 var fileSize;
 g_dirname = ''
 g_object_name = ''
@@ -9,7 +9,7 @@ g_object_name_type = ''
 now = timestamp = Date.parse(new Date()) / 1000; 
 
 var policyText = {
-    "expiration": "2020-01-01T12:00:00.000Z", //设置该Policy的失效时间，超过这个失效时间之后，就没有办法通过这个policy上传文件了
+    "expiration": "2022-01-01T12:00:00.000Z", //设置该Policy的失效时间，超过这个失效时间之后，就没有办法通过这个policy上传文件了
     "conditions": [
     ["content-length-range", 0, 1048576000] // 设置上传文件的大小限制
     ]
@@ -162,8 +162,10 @@ var uploader = new plupload.Uploader({
             {
                 document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = 'upload to oss success, object name:' + get_uploaded_object_name(file.name);
                 var str = get_uploaded_object_name(file.name);
-                // document.getElementById("fileUrl").innerHTML="文件地址："+host+"/"+str;
+                document.getElementById("fileUrl").innerHTML="文件地址："+host+"/"+str;
                 // document.getElementById("fileUrl").innerHTML="<a href ='"+host+"+"/"+str'>下载</a>";
+                // alert("host:" + host);
+                // alert("str:" + str);
                 document.getElementById("textFileUrl").value = host+"/"+str;
                 var fSize = fileSize.replace(/ .*/,"");
                 document.getElementById("textFileSize").value = fSize;
