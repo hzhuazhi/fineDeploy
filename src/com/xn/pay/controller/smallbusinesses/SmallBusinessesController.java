@@ -168,8 +168,10 @@ public class SmallBusinessesController<T> extends BaseController {
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
             smallBusinessesService.manyOperation(bean);
+            if(bean.getUseStatus()==2){
+                smallBusinessesService.updateRemarks(bean.getId());
+            }
 
-            smallBusinessesService.updateRemarks(bean.getId());
 //            sendSuccessMessage(response, "状态更新成功");
             return "pay/smallbusinesses/smallbusinessesIndex";
         }else{

@@ -359,7 +359,7 @@
       </if>
       a.update_time = NOW(),
     </trim>
-    <include refid="Example_Where_Clause_id"/>
+    where  a.wx_id=#{wxId}
   </update>
 
 
