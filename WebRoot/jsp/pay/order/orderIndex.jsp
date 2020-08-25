@@ -10,7 +10,7 @@
 <div class="col_main">
     <div class = "condQueryDiv">
         <form id = "condForm">
-            <div class = "condQueryCtrl">
+            <div class = "condQueryCtrl" style="width: 100%;">
                 <%--<div class = "condQueryLabelDiv">平台订单：</div>--%>
                 <%--<div class="formCtrlDiv">--%>
                 <%--<input type ="text" class ="inputCommonSty" id="myTradeNo" name ="myTradeNo">--%>
@@ -34,9 +34,8 @@
                 <div class="formCtrlDiv">
                     <input type ="text" class ="inputCommonSty" id="wxNickname" name ="wxNickname">
                 </div>
-            </br>
                 <div class = "condQueryLabelDiv">订单状态：</div>
-                <div class="formCtrlDiv" id = "moduleTypeDiv">
+                <div class="formCtrlDiv">
                     <select id="orderStatus" name="orderStatus" class='text-input medium-input'>
                         <option value="0" selected="selected">=请选择=</option>
                         <option value="1">初始化</option>
@@ -45,9 +44,11 @@
                         <option value="4">成功</option>
                     </select>
                 </div>
-
+            <%--</br>--%>
+            </div>
+            <div class = "condQueryCtrl" style="width: 100%;">
                 <div class = "condQueryLabelDiv">是否发了红包：</div>
-                <div class="formCtrlDiv" id = "runStatusDiv">
+                <div class="formCtrlDiv" >
                     <select id="isRedPack" name="isRedPack" class='text-input medium-input'>
                         <option value="0" selected="selected">=请选择=</option>
                         <option value="1">未发红包</option>
@@ -56,7 +57,7 @@
                 </div>
 
                 <div class = "condQueryLabelDiv">是否回复：</div>
-                <div class="formCtrlDiv" id = "moduleTypeDiv">
+                <div class="formCtrlDiv" >
                     <select id="isReply" name="isReply" class='text-input medium-input'>
                         <option value="0" selected="selected">=请选择=</option>
                         <option value="1">初始化/未回复</option>
@@ -67,7 +68,7 @@
                 </div>
 
                 <div class = "condQueryLabelDiv">金额是否一致：</div>
-                <div class="formCtrlDiv" id = "moduleTypeDiv">
+                <div class="formCtrlDiv">
                     <select id="moneyFitType" name="moneyFitType" class='text-input medium-input'>
                         <option value="0" selected="selected">=请选择=</option>
                         <option value="1">初始化</option>
@@ -78,7 +79,7 @@
                 </div>
 
                 <div class = "condQueryLabelDiv">是否补单：</div>
-                <div class="formCtrlDiv" id = "moduleTypeDiv">
+                <div class="formCtrlDiv">
                     <select id="replenishType" name="replenishType" class='text-input medium-input'>
                         <option value="0" selected="selected">=请选择=</option>
                         <option value="1">不是补单</option>
@@ -86,14 +87,17 @@
                     </select>
                 </div>
 
-                    <div class = "condQueryLabelDiv">开始日期：</div>
+                <div class = "condQueryLabelDiv">开始日期：</div>
                 <div class="formCtrlDiv">
                     <input type="text" class ="inputCommonSty" name="curdayStart" id="curdayStart" size="10" readonly="readonly" onClick="WdatePicker({dateFmt:'yyyyMMdd'})" value="${model.curdayStart}"/>
                 </div>
+
                 <div class = "condQueryLabelDiv">截止日期：</div>
                 <div class="formCtrlDiv">
                     <input type="text" class ="inputCommonSty" name="curdayEnd" id="curdayEnd" size="10" readonly="readonly" onClick="WdatePicker({dateFmt:'yyyyMMdd'})" value="${model.curdayEnd}" />
                 </div>
+            </div>
+            <div class = "condQueryCtrl" style="width: 100%;" align="right" >
                 <div class="searchdiv">
                     <input type = "button" id = "btnQuery" class = "buttonClass imginput" value = "搜索"  />
                 </div>
