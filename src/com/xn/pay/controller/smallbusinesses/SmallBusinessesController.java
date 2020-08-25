@@ -43,6 +43,8 @@ public class SmallBusinessesController<T> extends BaseController {
 
 
 
+
+
     /**
      * 获取页面
      */
@@ -167,11 +169,18 @@ public class SmallBusinessesController<T> extends BaseController {
     public String manyOperation(HttpServletRequest request, HttpServletResponse response, SmallBusinesses bean) throws Exception {
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            // 修改小薇暂停状态
             smallBusinessesService.manyOperation(bean);
-            if(bean.getUseStatus()==2){
-                smallBusinessesService.updateRemarks(bean.getId());
+            if (bean.getId() != null && bean.getId() > 0 && bean.getUseStatus() != null && bean.getUseStatus() > 0){
+                // 修改小薇旗下收款账号的暂停/开启的使用状态
+                CollectionAccount collectionAccountModel = new CollectionAccount();
+                collectionAccountModel.setWxId(bean.getId());
+                collectionAccountModel.setUseStatus(bean.getUseStatus());
+                collectionAccountService.updateUseStatus(collectionAccountModel);
             }
-
+//            if(bean.getUseStatus()==2){
+//                smallBusinessesService.updateRemarks(bean.getId());
+//            }
 //            sendSuccessMessage(response, "状态更新成功");
             return "pay/smallbusinesses/smallbusinessesIndex";
         }else{

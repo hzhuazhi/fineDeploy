@@ -359,7 +359,65 @@
       </if>
       a.update_time = NOW(),
     </trim>
-    where  a.wx_id=#{wxId}
+    where  id =#{id}
+  </update>
+
+
+
+  <update id="updateStart" parameterType="Object">
+    UPDATE tb_fn_did_collection_account a
+    <trim prefix="set" suffixOverrides=",">
+      <if test="did != null" >
+        did = #{did,jdbcType=BIGINT},
+      </if>
+      <if test="acName != null" >
+        ac_name = #{acName,jdbcType=VARCHAR},
+      </if>
+      <if test="acType != null" >
+        ac_type = #{acType,jdbcType=BIT},
+      </if>
+      <if test="acNum != null" >
+        ac_num = #{acNum,jdbcType=VARCHAR},
+      </if>
+      <if test="mmQrCode != null" >
+        mm_qr_code = #{mmQrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ddQrCode != null" >
+        dd_qr_code = #{ddQrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payee != null" >
+        payee = #{payee,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessType != null" >
+        business_type = #{businessType,jdbcType=BIT},
+      </if>
+      <if test="wxQrCodeAds != null" >
+        wx_qr_code_ads = #{wxQrCodeAds,jdbcType=VARCHAR},
+      </if>
+      <if test="daySwitch != null" >
+        day_switch = #{daySwitch,jdbcType=BIT},
+      </if>
+      <if test="monthSwitch != null" >
+        month_switch = #{monthSwitch,jdbcType=BIT},
+      </if>
+      <if test="totalSwitch != null" >
+        total_switch = #{totalSwitch,jdbcType=BIT},
+      </if>
+      <if test="checkStatus != null" >
+        check_status = #{checkStatus,jdbcType=BIT},
+      </if>
+      <if test="checkInfo != null" >
+        check_info = #{checkInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="useStatus != null" >
+        use_status = #{useStatus,jdbcType=BIT},
+      </if>
+      a.update_time = NOW(),
+    </trim>
+    where  wx_id =#{wxId}
   </update>
 
 
@@ -395,5 +453,20 @@
         and a.wx_id =#{wxId}
         and a.yn=0
    </update>
+
+
+  <!-- 根据小薇ID修改收款账号的使用暂停状态 -->
+  <update id="updateUseStatus" parameterType="Object">
+    update tb_fn_did_collection_account a
+    <trim prefix="set" suffixOverrides=",">
+      <if test="useStatus != 0 and useStatus > 0  " >
+        a.use_status=#{useStatus},
+      </if>
+      a.update_time=NOW()
+    </trim>
+    where 1=1
+    and a.wx_id = #{wxId}
+    and a.yn = 0
+  </update>
 
 </mapper>

@@ -42,12 +42,11 @@ public class SmallBusinessesServiceImpl <T> extends BaseServiceImpl<T> implement
     @Override
     public void updateRemarks(long wxId) {
         wxClerkService.deleteAll(wxId);
-
         CollectionAccount   collectionAccount = new CollectionAccount();
         collectionAccount.setWxId(wxId);
         collectionAccount.setCheckInfo("检测小微二维码失效");
         collectionAccount.setCheckStatus(1);
-        collectionAccountService.update(collectionAccount);
+        collectionAccountService.updateStart(collectionAccount);
 
     }
 }

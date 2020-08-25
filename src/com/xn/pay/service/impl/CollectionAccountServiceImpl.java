@@ -41,4 +41,14 @@ public class CollectionAccountServiceImpl <T> extends BaseServiceImpl<T> impleme
     public List<CollectionAccount> queryByListPayee(CollectionAccount collectionAccount) {
         return collectionAccountDao.queryByListPayee(collectionAccount);
     }
+
+    @Override
+    public int updateStart(CollectionAccount collectionAccount) {
+        return collectionAccountDao.updateStart(collectionAccount);
+    }
+
+    @Override
+    public int updateUseStatus(CollectionAccount model) {
+        return collectionAccountDao.updateUseStatus(model);
+    }
 }

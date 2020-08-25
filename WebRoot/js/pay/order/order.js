@@ -79,7 +79,26 @@ var account = {
                 $(nTd).html(html);
             }
         },
-        {"data":"replyData",},
+        {"data":"replyData",
+            // "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+            //     var html="";
+            //     if(oData.moneyFitType==1){
+            //         html='<span>初始化</span>';
+            //     }else if(oData.moneyFitType==2){
+            //         html='<span><font color="red">少了</font></span>';
+            //     }else if(oData.moneyFitType==3){
+            //         html='<span><font color="red">多了</font></span>';
+            //     }else if(oData.moneyFitType==4){
+            //         html='<span>一致</span>';
+            //     }
+            //     $(nTd).html(html);
+            // }
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                var html="";
+                html='<span style="color:red ">'+oData.replyData+'</span>';
+                $(nTd).html(html);
+            }
+        },
         {"data":"replyTime",},
         {"data":"actualMoney",},
         {"data":"moneyFitType",
