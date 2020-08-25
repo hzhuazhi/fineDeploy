@@ -17,7 +17,7 @@
                 <%--</div>--%>
                 <div class = "condQueryLabelDiv">订单号：</div>
                 <div class="formCtrlDiv">
-                    <input type ="text" class ="inputCommonSty" id="orderNo" name ="orderNo">
+                        <input type ="text" class ="inputCommonSty" id="orderNo" name ="orderNo">
                 </div>
 
                 <div class = "condQueryLabelDiv">商家订单：</div>
