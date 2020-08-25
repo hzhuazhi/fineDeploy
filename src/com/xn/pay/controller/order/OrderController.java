@@ -206,9 +206,9 @@ public class OrderController extends BaseController {
             String[] titles = new String[10];
             String[] titleCode = new String[10];
             String filename = "派单详情";
-            titles = new String[]{"订单号", "订单金额","用户昵称", "注册账号", "收款类型", "收款二维码", "微信群", "订单状态", "失效时间", "支付宝ID/微信ID", "支付宝账号/微信群ID",
+            titles = new String[]{"订单号", "订单金额","用户昵称", "注册账号", "收款类型", "收款二维码", "小微", "微信群", "订单状态", "失效时间", "支付宝ID/微信ID", "支付宝账号/微信群ID",
                     "收益", "是否发红包", "发红包时间", "是否回复", "回复类容", "回复时间", "回复的实际金额", "金额是否与上报金额一致", "是否是补单", "备注", "创建日期", "创建时间"};
-            titleCode = new String[]{"orderNo", "orderMoney", "nickname", "acNum", "collectionTypeStr", "qrCode", "wxNickname", "orderStatusStr", "invalidTime", "userId", "zfbAcNum",
+            titleCode = new String[]{"orderNo", "orderMoney", "nickname", "acNum", "collectionTypeStr", "qrCode", "wxName", "wxNickname", "orderStatusStr", "invalidTime", "userId", "zfbAcNum",
             "profit", "isRedPackStr", "redPackTime", "isReplyStr", "replyData", "replyTime", "actualMoney", "moneyFitTypeStr", "replenishTypeStr", "remark", "curday", "createTime"};
             List<Map<String,Object>> paramList = new ArrayList<>();
             for(OrderModel paramO : dataList){

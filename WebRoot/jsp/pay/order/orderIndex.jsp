@@ -30,6 +30,11 @@
                     <input type ="text" class ="inputCommonSty" id="nickname" name ="nickname">
                 </div>
 
+                <div class = "condQueryLabelDiv">小微昵称：</div>
+                <div class="formCtrlDiv">
+                    <input type ="text" class ="inputCommonSty" id="wxName" name ="wxName">
+                </div>
+
                 <div class = "condQueryLabelDiv">微信群：</div>
                 <div class="formCtrlDiv">
                     <input type ="text" class ="inputCommonSty" id="wxNickname" name ="wxNickname">
@@ -125,6 +130,7 @@
             <th width="100">订单金额</th>
             <th width="100">用户昵称</th>
             <th width="100">支付类型</th>
+            <th width="100">小微</th>
             <th width="100">微信群</th>
             <th width="100">订单状态</th>
             <th width="150">超时时间</th>

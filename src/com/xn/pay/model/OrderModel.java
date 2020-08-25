@@ -261,6 +261,11 @@ public class OrderModel extends BasePage {
 
     private int dataType;
 
+    /**
+     * 小微昵称
+     */
+    private String wxName;
+
 
     public long getId() {
         return id;
@@ -732,5 +737,13 @@ public class OrderModel extends BasePage {
 
     public void setDataType(int dataType) {
         this.dataType = dataType;
+    }
+
+    public String getWxName() {
+        return wxName;
+    }
+
+    public void setWxName(String wxName) {
+        this.wxName = wxName;
     }
 }

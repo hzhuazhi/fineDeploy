@@ -33,6 +33,7 @@ var account = {
                 $(nTd).html(html);
             }
         },
+        {"data":"wxName",},
         {"data":"wxNickname",},
         {"data":"orderStatus",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
@@ -134,6 +135,7 @@ var account = {
         orderNo:null,
         outTradeNo:null,
         nickname:null,
+        wxName:null,
         wxNickname:null,
         orderStatus:0,
         isRedPack:0,
@@ -156,6 +158,7 @@ var account = {
             account.condJsonData['orderNo'] = $("#orderNo").val();
             account.condJsonData['outTradeNo'] = $("#outTradeNo").val();
             account.condJsonData['nickname'] = $("#nickname").val();
+            account.condJsonData['wxName'] = $("#wxName").val();
             account.condJsonData['wxNickname'] = $("#wxNickname").val();
             account.condJsonData['orderStatus'] = $("#orderStatus").val();
             account.condJsonData['isRedPack'] = $("#isRedPack").val();
@@ -176,6 +179,8 @@ var account = {
             $("#outTradeNo").val("");
             account.condJsonData['nickname'] = "";
             $("#nickname").val("");
+            account.condJsonData['wxName'] = "";
+            $("#wxName").val("");
             account.condJsonData['wxNickname'] = "";
             $("#wxNickname").val("");
             account.condJsonData['orderStatus'] = "0";
@@ -210,6 +215,7 @@ var account = {
         var orderNo = $("#orderNo").val();
         var outTradeNo = $("#outTradeNo").val();
         var nickname = $("#nickname").val();
+        var wxName = $("#wxName").val();
         var wxNickname = $("#wxNickname").val();
         var orderStatus = $("#orderStatus").val();
         var isRedPack = $("#isRedPack").val();
@@ -222,6 +228,7 @@ var account = {
             "orderNo":orderNo,
             "outTradeNo":outTradeNo,
             "nickname":nickname,
+            "wxName":wxName,
             "wxNickname":wxNickname,
             "orderStatus":orderStatus,
             "isRedPack":isRedPack,

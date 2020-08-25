@@ -44,6 +44,7 @@
         <result column="total_order_money" property="totalOrderMoney"  />
         <result column="total_profit" property="totalProfit"  />
         <result column="total_actual_money" property="totalActualMoney"  />
+        <result column="wx_name" property="wxName"  />
     </resultMap>
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
@@ -52,7 +53,8 @@
         a.program_time,a.did_status,a.did_time,a.profit,a.is_red_pack,a.red_pack_time,a.is_reply,a.reply_data,
         a.reply_time,a.actual_money,a.money_fit_type,a.replenish_type,a.remark,a.curday,
         a.create_time,a.update_time,a.ts_time,a.yn,
-        b.nickname,b.ac_num
+        b.nickname,b.ac_num,
+        c.wx_name
 
     </sql>
 
@@ -102,6 +104,9 @@
             <if test="acNum != null and acNum != '' " >
                 and b.ac_num = #{acNum}
             </if>
+            <if test="wxName != null and wxName != '' " >
+                and c.wx_name = #{wxName}
+            </if>
 
             and a.yn = 0
         </trim>
@@ -138,7 +143,7 @@
     <!-- 查询总数-->
     <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
         select count(1)
-        from tb_fn_order a left join tb_fn_did b on a.did=b.id
+        from tb_fn_order a left join tb_fn_did b on a.did=b.id left join tb_fn_wx c on a.wx_id = c.id
         <include refid="Example_Where_Clause"/>
     </select>
 
@@ -146,7 +151,7 @@
     <select id="queryByList" resultMap="dataMap"  parameterType="Object">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_order a left join tb_fn_did b on a.did=b.id
+        from tb_fn_order a left join tb_fn_did b on a.did=b.id left join tb_fn_wx c on a.wx_id = c.id
         <include refid="Example_Where_Clause"/>
         order by a.create_time desc
         limit #{startIndex},#{pageSize}
@@ -156,7 +161,7 @@
     <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_order a left join tb_fn_did b on a.did=b.id
+        from tb_fn_order a left join tb_fn_did b on a.did=b.id left join tb_fn_wx c on a.wx_id = c.id
         <include refid="Example_Where_Clause"/>
         order by a.create_time desc
     </select>
@@ -166,7 +171,7 @@
     <select id="queryById"  resultMap="dataMap" parameterType="Object">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_order a left join tb_fn_did b on a.did=b.id
+        from tb_fn_order a left join tb_fn_did b on a.did=b.id left join tb_fn_wx c on a.wx_id = c.id
         <include refid="Example_Where_Clause_id"/>
     </select>
 
@@ -174,7 +179,7 @@
     <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
         select
         <include refid="Base_Column_List" />
-        from tb_fn_order a left join tb_fn_did b on a.did=b.id
+        from tb_fn_order a left join tb_fn_did b on a.did=b.id left join tb_fn_wx c on a.wx_id = c.id
         <include refid="Example_Where_Clause"/>
         limit 1
     </select>
@@ -185,7 +190,7 @@
         ifnull(sum(convert(a.order_money,decimal(19,2))), '0.00') as total_order_money,
         ifnull(sum(convert(a.profit,decimal(19,2))),'0.00') as total_profit,
         ifnull(sum(convert(a.actual_money,decimal(19,2))),'0.00') as total_actual_money
-        from tb_fn_order a left join tb_fn_did b on a.did=b.id
+        from tb_fn_order a left join tb_fn_did b on a.did=b.id left join tb_fn_wx c on a.wx_id = c.id
         <include refid="Example_Where_Clause"/>
     </select>
 
