@@ -17,12 +17,16 @@
     <result column="create_time" property="createTime"  />
     <result column="update_time" property="updateTime"  />
     <result column="ts_time" property="tsTime"  />
+    <result column="group_num" property="groupNum"  />
+    <result column="is_group_num" property="isGroupNum"  />
+    <result column="is_ok_group" property="isOkGroup"  />
+    <result column="day_group_num" property="dayGroupNum"  />
     <result column="yn" property="yn"  />
   </resultMap>
   <!-- 定义数据库基本列,只适用代替单表的*-->
   <sql id="Base_Column_List">
         a.id, a.ac_name, a.wx_pass_wd, a.wx_name, a.to_wxid, a.total_link, a.binding_mobile, a.use_status,
-    a.create_time, a.update_time, a.ts_time, a.yn, a.data_num, a.day_num, a.wx_qr_code
+    a.create_time, a.update_time, a.ts_time, a.yn
     </sql>
 
 
@@ -136,15 +140,6 @@
       <if test="useStatus != null" >
         use_status,
       </if>
-      <if test="dataNum != null" >
-        data_num ,
-      </if>
-      <if test="dayNum != null" >
-        day_num,
-      </if>
-      <if test="wxQrCode != null" >
-        wx_qr_code,
-      </if>
       create_time,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -171,15 +166,6 @@
       </if>
       <if test="useStatus != null" >
         #{useStatus,jdbcType=BIT},
-      </if>
-      <if test="dataNum != null" >
-        #{dataNum,jdbcType=BIT},
-      </if>
-      <if test="dayNum != null" >
-        #{dayNum,jdbcType=BIT},
-      </if>
-      <if test="wxQrCode != null" >
-        #{wxQrCode,jdbcType=BIT},
       </if>
       NOW(),
     </trim>
@@ -213,15 +199,6 @@
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dataNum != null" >
-        data_num = #{dataNum,jdbcType=TIMESTAMP},
-      </if>
-      <if test="dayNum != null" >
-        day_num = #{dayNum,jdbcType=TIMESTAMP},
-      </if>
-      <if test="wxQrCode != null" >
-        wx_qr_code = #{wxQrCode,jdbcType=TIMESTAMP},
       </if>
       a.update_time = NOW(),
     </trim>
