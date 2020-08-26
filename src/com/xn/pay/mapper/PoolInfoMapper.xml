@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xn.pay.dao.PoolInfoDao" >
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.pay.model.PoolInfoModel" id="dataMap">
+        <id column="id" property="id" />
+        <result column="pool_type" property="poolType"/>
+        <result column="did" property="did"/>
+        <result column="nickname" property="nickname"  />
+        <result column="phone_num" property="phoneNum"  />
+        <result column="balance" property="balance"  />
+        <result column="lock_money" property="lockMoney"  />
+        <result column="use_money" property="useMoney"  />
+        <result column="collection_account_id" property="collectionAccountId"  />
+        <result column="wx_id" property="wxId" />
+        <result column="mm_qr_code" property="mmQrCode"  />
+        <result column="dd_qr_code" property="ddQrCode"  />
+        <result column="payee" property="payee"  />
+        <result column="bank_name" property="bankName"  />
+        <result column="red_pack_num" property="redPackNum"  />
+        <result column="wx_name" property="wxName"  />
+        <result column="create_time" property="createTime"  />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.nickname,a.phone_num,a.balance,a.lock_money,
+        ifnull(convert((a.balance + a.lock_money),decimal(19,2)), '0.00') as use_money,
+        b.id as collection_account_id,b.did,b.wx_id,b.mm_qr_code,b.dd_qr_code,b.payee,
+        b.bank_name,b.red_pack_num,
+        c.wx_name,
+        d.create_time
+    </sql>
+
+
+
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="did != 0 and did >0 " >
+                and b.did = #{did}
+            </if>
+            <if test="nickname != null and nickname != '' " >
+                and a.nickname = #{nickname}
+            </if>
+            <if test="phoneNum != null and phoneNum != '' " >
+                and a.phone_num = #{phoneNum}
+            </if>
+            <if test="collectionAccountId != 0 and collectionAccountId >0 " >
+                and b.id = #{collectionAccountId}
+            </if>
+            <if test="payee != null and payee != '' " >
+                and b.payee = #{payee}
+            </if>
+            <if test="wxName != null and wxName != '' " >
+                and c.wx_name = #{wxName}
+            </if>
+            and b.ac_type =3 and b.invalid_time > now() and b.is_invalid =1
+            and b.red_pack_num > 0 and b.check_status = 3 and b.login_type = 2 and b.use_status = 1
+            and a.yn = 0
+        </trim>
+    </sql>
+
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1) from(
+            select 1 as pool_type,<include refid="Base_Column_List" />
+            from tb_fn_did a left join tb_fn_did_collection_account b on a.id = b.did and b.yn = 0
+            left join tb_fn_wx c on b.wx_id = c.id and c.yn =0
+            left join tb_fn_pool_wait d on a.id = d.did and d.yn =0
+            <include refid="Example_Where_Clause"/>
+            and a.id in(select did from tb_fn_pool_wait where yn = 0)
+            union all
+            select 2 as pool_type,<include refid="Base_Column_List" />
+            from tb_fn_did a left join tb_fn_did_collection_account b on a.id = b.did and b.yn = 0
+            left join tb_fn_wx c on b.wx_id = c.id and c.yn =0
+            left join tb_fn_pool_open d on a.id = d.did and d.yn =0
+            <include refid="Example_Where_Clause"/>
+            and a.id in(select did from tb_fn_pool_open where yn = 0)
+        )a
+
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select 1 as pool_type,<include refid="Base_Column_List" />
+        from tb_fn_did a left join tb_fn_did_collection_account b on a.id = b.did and b.yn = 0
+        left join tb_fn_wx c on b.wx_id = c.id and c.yn =0
+        left join tb_fn_pool_wait d on a.id = d.did and d.yn =0
+        <include refid="Example_Where_Clause"/>
+        and a.id in(select did from tb_fn_pool_wait where yn = 0)
+        union all
+        select 2 as pool_type,<include refid="Base_Column_List" />
+        from tb_fn_did a left join tb_fn_did_collection_account b on a.id = b.did and b.yn = 0
+        left join tb_fn_wx c on b.wx_id = c.id and c.yn =0
+        left join tb_fn_pool_open d on a.id = d.did and d.yn =0
+        <include refid="Example_Where_Clause"/>
+        and a.id in(select did from tb_fn_pool_open where yn = 0)
+        limit #{startIndex},#{pageSize}
+    </select>
+
+
+
+
+    <!-- 分页-查询等待池的数据总数-->
+    <select id="queryByWaitCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1) from(
+        select 1 as pool_type,<include refid="Base_Column_List" />
+        from tb_fn_did a left join tb_fn_did_collection_account b on a.id = b.did and b.yn = 0
+        left join tb_fn_wx c on b.wx_id = c.id and c.yn =0
+        left join tb_fn_pool_wait d on a.id = d.did and d.yn =0
+        <include refid="Example_Where_Clause"/>
+        and a.id in(select did from tb_fn_pool_wait where yn = 0)
+        )a
+
+    </select>
+
+    <!-- 分页-查询等待池的数据 -->
+    <select id="queryByWaitList" resultMap="dataMap"  parameterType="Object">
+        select 1 as pool_type,<include refid="Base_Column_List" />
+        from tb_fn_did a left join tb_fn_did_collection_account b on a.id = b.did and b.yn = 0
+        left join tb_fn_wx c on b.wx_id = c.id and c.yn =0
+        left join tb_fn_pool_wait d on a.id = d.did and d.yn =0
+        <include refid="Example_Where_Clause"/>
+        and a.id in(select did from tb_fn_pool_wait where yn = 0)
+        limit #{startIndex},#{pageSize}
+    </select>
+
+
+
+    <!-- 分页-查询抢单池的数据总数-->
+    <select id="queryByOpenCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1) from(
+        select 2 as pool_type,<include refid="Base_Column_List" />
+        from tb_fn_did a left join tb_fn_did_collection_account b on a.id = b.did and b.yn = 0
+        left join tb_fn_wx c on b.wx_id = c.id and c.yn =0
+        left join tb_fn_pool_open d on a.id = d.did and d.yn =0
+        <include refid="Example_Where_Clause"/>
+        and a.id in(select did from tb_fn_pool_open where yn = 0)
+        )a
+
+    </select>
+
+    <!-- 分页-查询抢单池的数据 -->
+    <select id="queryByOpenList" resultMap="dataMap"  parameterType="Object">
+        select 2 as pool_type,<include refid="Base_Column_List" />
+        from tb_fn_did a left join tb_fn_did_collection_account b on a.id = b.did and b.yn = 0
+        left join tb_fn_wx c on b.wx_id = c.id and c.yn =0
+        left join tb_fn_pool_open d on a.id = d.did and d.yn =0
+        <include refid="Example_Where_Clause"/>
+        and a.id in(select did from tb_fn_pool_open where yn = 0)
+        limit #{startIndex},#{pageSize}
+    </select>
+
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select 1 as pool_type,<include refid="Base_Column_List" />
+        from tb_fn_did a left join tb_fn_did_collection_account b on a.id = b.did and b.yn = 0
+        left join tb_fn_wx c on b.wx_id = c.id and c.yn =0
+        left join tb_fn_pool_wait d on a.id = d.did and d.yn =0
+        <include refid="Example_Where_Clause"/>
+        and a.id in(select did from tb_fn_pool_wait where yn = 0)
+        union all
+        select 2 as pool_type,<include refid="Base_Column_List" />
+        from tb_fn_did a left join tb_fn_did_collection_account b on a.id = b.did and b.yn = 0
+        left join tb_fn_wx c on b.wx_id = c.id and c.yn =0
+        left join tb_fn_pool_open d on a.id = d.did and d.yn =0
+        <include refid="Example_Where_Clause"/>
+        and a.id in(select did from tb_fn_pool_open where yn = 0)
+    </select>
+
+
+    <!-- 查询等待池中的用户集合 -->
+    <select id="getWaitDidList" parameterType="Object" resultType="java.lang.Long">
+        select
+        distinct(a.did) as did
+        from tb_fn_pool_wait a
+        where 1=1
+        and a.yn = 0
+    </select>
+
+    <!-- 获取抢单池中的用户集合ID -->
+    <select id="getOpenDidList" parameterType="Object" resultType="java.lang.Long">
+        select
+        distinct(a.did) as did
+        from tb_fn_pool_open a
+        where 1=1
+        and a.yn = 0
+    </select>
+
+
+    <!-- 获取等待池的用户数 -->
+    <select id="countWaitDidNum" parameterType="Object" resultType="java.lang.Integer">
+        select
+        count(distinct(a.did)) as num
+        from tb_fn_pool_wait a
+        where 1=1
+        and a.yn = 0
+    </select>
+
+    <!-- 获取抢单池的用户数 -->
+    <select id="countOpenDidNum" parameterType="Object" resultType="java.lang.Integer">
+        select
+        count(distinct(a.did)) as num
+        from tb_fn_pool_open a
+        where 1=1
+        and a.yn = 0
+    </select>
+
+
+    <!-- 获取等待池的群数 -->
+    <select id="countWaitGroupNum" parameterType="Object" resultType="java.lang.Integer">
+        select
+        count(1) as num
+        from tb_fn_did_collection_account a
+        where 1=1
+        and a.ac_type =3 and a.invalid_time > now() and a.is_invalid =1
+        and a.red_pack_num > 0 and a.check_status = 3 and a.login_type = 2 and a.use_status = 1
+        <if test="idList != null and idList.size()>0">
+            and a.did in
+            <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        and a.yn = 0
+    </select>
+
+    <!-- 获取抢单池的群数 -->
+    <select id="countOpenGroupNum" parameterType="Object" resultType="java.lang.Integer">
+        select
+        count(1) as num
+        from tb_fn_did_collection_account a
+        where 1=1
+        and a.ac_type =3 and a.invalid_time > now() and a.is_invalid =1
+        and a.red_pack_num > 0 and a.check_status = 3 and a.login_type = 2 and a.use_status = 1
+        <if test="idList != null and idList.size()>0">
+            and a.did in
+            <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        and a.yn = 0
+    </select>
+
+
+    <!-- 获取等待池的红包数 -->
+    <select id="countWaitRedPackNum" parameterType="Object" resultType="java.lang.Integer">
+        select
+        sum(a.red_pack_num) as num
+        from tb_fn_did_collection_account a
+        where 1=1
+        and a.ac_type =3 and a.invalid_time > now() and a.is_invalid =1
+        and a.red_pack_num > 0 and a.check_status = 3 and a.login_type = 2 and a.use_status = 1
+        <if test="idList != null and idList.size()>0">
+            and a.did in
+            <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        and a.yn = 0
+    </select>
+
+    <!-- 获取抢单池的红包数 -->
+    <select id="countOpenRedPackNum" parameterType="Object" resultType="java.lang.Integer">
+        select
+        sum(a.red_pack_num) as num
+        from tb_fn_did_collection_account a
+        where 1=1
+        and a.ac_type =3 and a.invalid_time > now() and a.is_invalid =1
+        and a.red_pack_num > 0 and a.check_status = 3 and a.login_type = 2 and a.use_status = 1
+        <if test="idList != null and idList.size()>0">
+            and a.did in
+            <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        and a.yn = 0
+    </select>
+
+
+
+    <!-- 获取等待池的余额 -->
+    <select id="countWaitBalance" parameterType="Object" resultType="java.lang.String">
+        select
+        ifnull(sum(convert(a.balance,decimal(19,2))), '0.00') as str
+        from tb_fn_did a
+        where 1=1
+        <if test="idList != null and idList.size()>0">
+            and a.id in
+            <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        and a.yn = 0
+    </select>
+
+    <!-- 获取抢单池的余额 -->
+    <select id="countOpenBalance" parameterType="Object" resultType="java.lang.String">
+        select
+        ifnull(sum(convert(a.balance,decimal(19,2))), '0.00') as str
+        from tb_fn_did a
+        where 1=1
+        <if test="idList != null and idList.size()>0">
+            and a.id in
+            <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        and a.yn = 0
+    </select>
+
+
+    <!-- 获取等待池的可用金额 -->
+    <select id="countWaitUseMoney" parameterType="Object" resultType="java.lang.String">
+        select
+        ifnull(sum(convert(a.balance + a.lock_money,decimal(19,2))), '0.00') as str
+        from tb_fn_did a
+        where 1=1
+        <if test="idList != null and idList.size()>0">
+            and a.id in
+            <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        and a.yn = 0
+    </select>
+
+    <!-- 获取抢单池的可用金额 -->
+    <select id="countOpenUseMoney" parameterType="Object" resultType="java.lang.String">
+        select
+        ifnull(sum(convert(a.balance + a.lock_money,decimal(19,2))), '0.00') as str
+        from tb_fn_did a
+        where 1=1
+        <if test="idList != null and idList.size()>0">
+            and a.id in
+            <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        and a.yn = 0
+    </select>
+
+
+
+
+
+</mapper>

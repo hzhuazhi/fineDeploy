@@ -69,7 +69,23 @@ var common = {
 		
 	},
 
-    savaRefreshLisg: function(data,){
+    //更新状态-弹出动态的提示类容
+    updateStatusByAlert: function(data,showMsg){
+        if(!confirm("确认要" + showMsg + "吗？")){
+            return;
+        }
+        this.ajax(this.url.delete_url,data,function(data){
+            if (data.success) {
+                promptMessage (showMsg + '成功！','success',false);
+                common.goList();
+            } else {
+                art.alert(data.msg);
+            }
+        });
+
+    },
+
+    savaRefreshLisg: function(data){
 
         if(datatable){
             datatable.destroy();
@@ -100,6 +116,32 @@ var common = {
             }
             showMsg = '启用成功!';
 		}
+        this.ajax(this.url.manyOperation_url,data,function(data){
+            if (data.success) {
+                promptMessage (showMsg,'success',false);
+                common.goList();
+            } else {
+                art.alert(data.msg);
+            }
+        });
+
+    },
+
+
+    //修改状态：开启，暂停
+    changeUseStatus: function(data){
+        var showMsg = '';
+        if (data.useStatus == 2){
+            if(!confirm("确认要暂停吗？")){
+                return;
+            }
+            showMsg = '暂停成功!';
+        }else if(data.useStatus == 1){
+            if(!confirm("确认要启用吗？")){
+                return;
+            }
+            showMsg = '启用成功!';
+        }
         this.ajax(this.url.manyOperation_url,data,function(data){
             if (data.success) {
                 promptMessage (showMsg,'success',false);
