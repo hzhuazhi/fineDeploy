@@ -205,7 +205,6 @@ public class PoolInfoController extends BaseController {
     public void manyOperation(HttpServletRequest request, HttpServletResponse response, PoolInfoModel model) throws Exception {
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
-            model.setUseStatus(1);
             poolInfoService.updateDidCollectionAccountUseStatus(model);
             sendSuccessMessage(response, "状态更新成功");
         }else{
