@@ -141,4 +141,32 @@ public interface PoolInfoService<T> extends BaseService<T> {
     public String countOpenUseMoney(PoolInfoModel model);
 
 
+    /**
+     * @Description: 移出等待池
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/8/26 20:44
+     */
+    public int updateWaitDid(PoolInfoModel model);
+
+    /**
+     * @Description: 移出抢单池
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/8/26 20:44
+     */
+    public int updateOpenDid(PoolInfoModel model);
+
+    /**
+     * @Description: 暂停微信群
+     * @param model
+     * @return
+     * @author yoko
+     * @date 2020/8/27 10:51
+     */
+    public int updateDidCollectionAccountUseStatus(PoolInfoModel model);
+
+
 }

@@ -2,13 +2,9 @@ package com.xn.pay.controller.poolinfo;
 
 import com.xn.common.constant.ManagerConstant;
 import com.xn.common.controller.BaseController;
-import com.xn.common.util.DateUtil;
 import com.xn.common.util.HtmlUtil;
 import com.xn.common.util.StringUtil;
-import com.xn.pay.controller.order.OrderController;
-import com.xn.pay.model.OrderModel;
 import com.xn.pay.model.PoolInfoModel;
-import com.xn.pay.service.OrderService;
 import com.xn.pay.service.PoolInfoService;
 import com.xn.system.entity.Account;
 import org.apache.log4j.Logger;
@@ -179,4 +175,43 @@ public class PoolInfoController extends BaseController {
         }
         HtmlUtil.writerJson(response, data);
     }
+
+
+
+    /**
+     * 删除数据
+     */
+    @RequestMapping("/delete")
+    public void delete(HttpServletRequest request, HttpServletResponse response, PoolInfoModel model) throws Exception {
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            model.setYn(1);
+            if (model.getPoolType() == 1){
+                poolInfoService.updateWaitDid(model);
+            }else if (model.getPoolType() == 2){
+                poolInfoService.updateOpenDid(model);
+            }
+            sendSuccessMessage(response, "删除成功");
+        }else{
+            sendFailureMessage(response, "登录超时,请重新登录在操作!");
+        }
+
+    }
+
+    /**
+     * 启用/禁用
+     */
+    @RequestMapping("/manyOperation")
+    public void manyOperation(HttpServletRequest request, HttpServletResponse response, PoolInfoModel model) throws Exception {
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            model.setUseStatus(1);
+            poolInfoService.updateDidCollectionAccountUseStatus(model);
+            sendSuccessMessage(response, "状态更新成功");
+        }else{
+            sendFailureMessage(response, "登录超时,请重新登录在操作!");
+        }
+    }
+
+
 }

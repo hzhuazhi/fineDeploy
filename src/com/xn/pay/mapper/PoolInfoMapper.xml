@@ -357,7 +357,51 @@
     </select>
 
 
+    <!-- 移出等待池 -->
+    <update id="updateWaitDid" parameterType="Object">
+        update tb_fn_pool_wait a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="yn != 0 and yn >0 " >
+                a.yn = #{yn},
+            </if>
+        </trim>
+        where 1=1
+        <if test="id != 0 and id >0 " >
+            and a.id = #{id}
+        </if>
+        and a.did = #{did}
+        and a.yn = 0
+    </update>
 
 
+    <!-- 移出抢单池 -->
+    <update id="updateOpenDid" parameterType="Object">
+        update tb_fn_pool_open a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="yn != 0 and yn >0 " >
+                a.yn = #{yn},
+            </if>
+        </trim>
+        where 1=1
+        <if test="id != 0 and id >0 " >
+            and a.id = #{id}
+        </if>
+        and a.did = #{did}
+        and a.yn = 0
+    </update>
+
+
+    <!-- 暂停微信群 -->
+    <update id="updateDidCollectionAccountUseStatus" parameterType="Object">
+        update tb_fn_did_collection_account a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="useStatus != 0 and useStatus >0 " >
+                a.use_status = #{useStatus},
+            </if>
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
 
 </mapper>

@@ -191,6 +191,16 @@ public class PoolInfoModel extends BasePage {
      */
     private List<Long> idList;
 
+    /**
+     * 使用状态
+     */
+    private int useStatus;
+
+    /**
+     * 是否有效：0有效，1无效/删除
+     */
+    private int yn;
+
 
     public long getId() {
         return id;
@@ -462,5 +472,21 @@ public class PoolInfoModel extends BasePage {
 
     public void setIdList(List<Long> idList) {
         this.idList = idList;
+    }
+
+    public int getUseStatus() {
+        return useStatus;
+    }
+
+    public void setUseStatus(int useStatus) {
+        this.useStatus = useStatus;
+    }
+
+    public int getYn() {
+        return yn;
+    }
+
+    public void setYn(int yn) {
+        this.yn = yn;
     }
 }

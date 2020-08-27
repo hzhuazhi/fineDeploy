@@ -101,4 +101,19 @@ public class PoolInfoServiceImpl<T> extends BaseServiceImpl<T> implements PoolIn
     public String countOpenUseMoney(PoolInfoModel model) {
         return poolInfoDao.countOpenUseMoney(model);
     }
+
+    @Override
+    public int updateWaitDid(PoolInfoModel model) {
+        return poolInfoDao.updateWaitDid(model);
+    }
+
+    @Override
+    public int updateOpenDid(PoolInfoModel model) {
+        return poolInfoDao.updateOpenDid(model);
+    }
+
+    @Override
+    public int updateDidCollectionAccountUseStatus(PoolInfoModel model) {
+        return poolInfoDao.updateDidCollectionAccountUseStatus(model);
+    }
 }

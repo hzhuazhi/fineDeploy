@@ -9,7 +9,7 @@ var account = {
         // add_url : ctx+ "/poolinfo/add.do",
         // update_url : ctx+ "/poolinfo/update.do",
         // queryId_url: ctx+ "/poolinfo/getId.do",
-        // delete_url: ctx+ "/poolinfo/delete.do",
+        delete_url: ctx+ "/poolinfo/delete.do",
         manyOperation_url: ctx+ "/poolinfo/manyOperation.do",
         exportData_url : ctx +  "/poolinfo/exportData.do"
     },
