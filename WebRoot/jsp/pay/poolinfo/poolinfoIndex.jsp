@@ -16,7 +16,7 @@
             <div class = "condQueryCtrl" style="width: 100%;">
                 <div class = "condQueryLabelDiv">池子类型：</div>
                 <div class="formCtrlDiv">
-                    <select id="orderStatus" name="dataType" class='text-input medium-input'>
+                    <select id="dataType" name="dataType" class='text-input medium-input'>
                         <option value="0" selected="selected">=请选择=</option>
                         <option value="1">等待池</option>
                         <option value="2">抢单池</option>
